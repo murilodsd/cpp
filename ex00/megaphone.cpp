@@ -6,7 +6,7 @@
 /*   By: mde-souz <mde-souz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 10:55:51 by mde-souz          #+#    #+#             */
-/*   Updated: 2025/01/20 10:55:52 by mde-souz         ###   ########.fr       */
+/*   Updated: 2025/04/22 08:48:06 by mde-souz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int main(int argc, char const *argv[])
 		j = 0;
 		while (argv[i][j])
 		{
-			std::cout << (char)toupper(argv[i][j]);
+			std::cout << (char)std::toupper(argv[i][j]);
 			j++;
 		}
 		i++;
