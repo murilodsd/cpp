@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 #include "Contact.hpp"
 
 class PhoneBook
@@ -8,6 +9,10 @@ class PhoneBook
 		int	index;
 	public:
 		PhoneBook();
-		void add(std::string first_name, std::string last_name, std::string nickname, int phone_number, std::string darkest_secret);
-		void showcontact(int index);
+		void	insert_in_phonebook(std::string first_name, std::string last_name, \
+			std::string nickname, std::string phone_number, std::string darkest_secret);
+		void	add_contact(PhoneBook &phonebook);
+		int	show_all_contacts();
+		void	search();
+		void	show_contact(int index);
 };
