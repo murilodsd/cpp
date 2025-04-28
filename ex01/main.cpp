@@ -1,17 +1,9 @@
 #include <iostream>
 #include <string>
 #include <cctype>
-#include <PhoneBook.hpp>
-
-void	toUpperCase(std::string &str)
-{
-	size_t i = 0;
-	while (i < str.length())
-	{
-		str[i] = std::toupper(str[i]);
-		i++;
-	}
-}
+#include <cstdlib>
+#include "PhoneBook.hpp"
+#include "utils.hpp"
 
 void	print_instructions()
 {
@@ -21,7 +13,6 @@ void	print_instructions()
 	std::cout << "-> SEARCH" << std::endl;
 	std::cout << "-> EXIT" << std::endl;
 	std::cout << std::endl;
-	std::cout << "Action: ";
 }
 
 int	main(int argc, char const *argv[])
@@ -34,9 +25,9 @@ int	main(int argc, char const *argv[])
 	while (exit == false)
 	{
 		print_instructions();
-		std::cin >> action;
+		utils::getValidInput("Action: ", action);
 		std::cout << std::endl;
-		toUpperCase(action);
+		utils::toUpperCase(action);
 		if (action == "ADD")
 			phonebook.add_contact(phonebook);
 		else if (action == "SEARCH")

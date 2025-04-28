@@ -1,5 +1,7 @@
 #include "PhoneBook.hpp"
+#include "utils.hpp"
 #include <iomanip>
+#include <cstdlib>
 
 PhoneBook::PhoneBook() :
 	index(0)
@@ -10,21 +12,17 @@ PhoneBook::PhoneBook() :
 void	ask_contact_info(std::string &first_name, std::string &last_name, std::string &nickname, \
 		std::string &phone_number, std::string &darkest_secret)
 {
-	first_name = "";
-	last_name = "";
-	nickname = "";
-	phone_number = "";
-	darkest_secret = "";
-	std::cout << "Type the first name: ";
-	std::cin >> first_name;
-	std::cout << "Type the last name: ";
-	std::cin >> last_name;
-	std::cout << "Type the nickname: ";
-	std::cin >> nickname;
-	std::cout << "Type the phone number: ";
-	std::cin >> phone_number;
-	std::cout << "Type the darkest secret: ";
-	std::cin >> darkest_secret;
+	utils::getValidInput("Type the first name: ", first_name);
+	utils::getValidInput("Type the last name: ", last_name);
+	utils::getValidInput("Type the nickname: ", nickname);
+	    // Validação para phone_number
+	while (true) {
+		utils::getValidInput("Type the phone number: ", phone_number);
+		if (utils::is_number(phone_number))
+			break; // Entrada válida
+		std::cout << "Phone number must contain only digits. Please try again." << std::endl;
+	}
+	utils::getValidInput("Type the darkest secret: ", darkest_secret);
 }
 
 void PhoneBook::insert_in_phonebook(std::string _first_name, std::string _last_name, std::string _nickname, std::string _phone_number, std::string _darkest_secret)
@@ -104,16 +102,19 @@ void	PhoneBook::search()
 	if (max_index != -1)
 	{
 	std::cout << std::endl;
-	std::cout << "Type the index to more info: ";
-	std::cin >> index;
-	while (std::stoi(index) < 0 || std::stoi(index) > max_index)
+	utils::getValidInput("Type the index to more info: ", index);
+	while (true)
 	{
+		if (utils::is_number(index))
+		{
+			if (std::atoi(index.c_str()) >= 0 || std::atoi(index.c_str()) <= max_index)
+				break;
+		}
 		std::cout << RED << "The index must be a number between 0 an " << max_index << std::endl << RESET;
-		std::cout << "Type the index to more info: ";
-		std::cin >> index;
+		utils::getValidInput("Type the index to more info: ", index);
 	}
 	std::cout << std::endl;
-	this->show_contact(std::stoi(index));
+	this->show_contact(std::atoi(index.c_str()));
 	}
 }
 
