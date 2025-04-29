@@ -17,12 +17,10 @@ void	print_instructions()
 
 int	main(int argc, char const *argv[])
 {
-	bool	exit;
 	std::string	action;
 	PhoneBook phonebook;
 
-	exit = false;
-	while (exit == false)
+	while (true)
 	{
 		print_instructions();
 		utils::getValidInput("Action: ", action);
@@ -33,7 +31,7 @@ int	main(int argc, char const *argv[])
 		else if (action == "SEARCH")
 			phonebook.search();
 		else if (action == "EXIT")
-			exit = true;
+			break ;
 		else
 			std::cout << RED << "Invalid option!" << std::endl << RESET;;
 				
