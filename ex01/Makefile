@@ -16,3 +16,11 @@ $(NAME): $(OBJ_PATH)/$(OBJ_FILES)
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.cpp
 	$(CPP) $(CPP_FLAGS) -c $< -o $@
+
+clean:
+	rm -rf $(OBJ_PATH)/$(OBJ_FILES)
+
+fclean: clean
+	rm -rf $(NAME)
+
+re: fclean all
