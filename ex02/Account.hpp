@@ -36,7 +36,7 @@ public:
 	bool	makeWithdrawal( int withdrawal );
 	//CONST
 	//promete não modificar o estado observável do objeto no qual ela é chamada.
-	int		checkAmount( void ) const;
+	int	checkAmount( void ) const;
 	void	displayStatus( void ) const;
 
 
