@@ -23,7 +23,7 @@ int	main(int argc, char const *argv[])
 	while (true)
 	{
 		print_instructions();
-		utils::getValidInput("Action: ", action);
+		utils::getValidInput("Action: ", action, "");
 		std::cout << std::endl;
 		utils::toUpperCase(action);
 		if (action == "ADD")
@@ -33,7 +33,7 @@ int	main(int argc, char const *argv[])
 		else if (action == "EXIT")
 			break ;
 		else
-			std::cout << RED << "Invalid option!" << std::endl << RESET;;
+			utils::alert_msg("Invalid option!");
 				
 	}
 	std::cout << BLUE << "See you soon!" << std::endl << RESET;

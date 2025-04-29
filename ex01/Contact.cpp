@@ -1,6 +1,7 @@
-#include "Contact.hpp" 
 #include <iostream>
 #include <iomanip>
+#include "Contact.hpp"
+#include "utils.hpp"
 
 Contact::Contact() :
 	_first_name(""),

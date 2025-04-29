@@ -15,7 +15,7 @@ namespace utils {
 		}
 	};
 
-	void	getValidInput(const std::string &prompt, std::string &input)
+	void	getValidInput(const std::string &prompt, std::string &input, std::string exceptions)
 	{
 		while (true)
 		{
@@ -25,13 +25,16 @@ namespace utils {
 			input.erase(0, input.find_first_not_of(" \t"));
 			input.erase(input.find_last_not_of(" \t") + 1);
 			
-			if (!input.empty())
+			if (!input.empty() && !anyCharInString(input, exceptions))
 				break;
-			std::cout << "Input cannot be empty. Please try again." << std::endl;
+			if (input.empty())
+				utils::alert_msg("Input cannot be empty. Please try again.");
+			else
+				utils::alert_msg("Input has invalid characters. Please try again.");
 		}
 	};
 
-	void	getValidNumberInput(const std::string &prompt, std::string &input)
+	void	getValidNumberInput(const std::string &prompt, std::string &input, std::string others_valids_char)
 	{
 		while (true)
 		{
@@ -41,13 +44,13 @@ namespace utils {
 			input.erase(0, input.find_first_not_of(" \t"));
 			input.erase(input.find_last_not_of(" \t") + 1);
 			
-			if (!input.empty() && str_is_number(input))
+			if (!input.empty() && is_str_number(input, others_valids_char))
 				break;
-			std::cout << "Input must be a number cannot be empty. Please try again." << std::endl;
+			utils::alert_msg("Input must be a number cannot be empty. Please try again.");
 		}
 	};
 
-	void	getValidAlphaInput(const std::string &prompt, std::string &input)
+	void	getValidAlphaInput(const std::string &prompt, std::string &input, std::string others_valids_char)
 	{
 		while (true)
 		{
@@ -57,33 +60,54 @@ namespace utils {
 			input.erase(0, input.find_first_not_of(" \t"));
 			input.erase(input.find_last_not_of(" \t") + 1);
 			
-			if (!input.empty() && str_is_alpha(input))
+			if (!input.empty() && is_str_alpha(input, others_valids_char))
 				break;
-			std::cout << "Input must have only letters and cannot be empty. Please try again." << std::endl;
+			utils::alert_msg("Input must have only letters and cannot be empty. Please try again.");
 		}
 	};
 
-	bool	str_is_number(const std::string &str)
+	bool	anyCharInString(const std::string& str, const std::string& chars)
+	{
+		if (str.empty() || chars.empty()) 
+			return false;
+		return (str.find_first_of(chars) != std::string::npos);
+	}
+
+	bool	charInString(char c, const std::string& str)
+	{
+		if (str.empty()) 
+			return false;
+		return (str.find(c) != std::string::npos);
+	};
+
+	//If you just need to check if its a number, pass "" as a second argument
+	bool	is_str_number(const std::string &str, std::string exceptions)
 	{
 		if (str.empty())
 			return false;
 		for (size_t i = 0; i < str.length(); i++)
 		{
-			if (!std::isdigit(str[i]))
+			if (!std::isdigit(str[i]) && !charInString(str[i], exceptions))
 				return false;
 		}
 		return true;
 	}
 
-	bool	str_is_alpha(const std::string &str)
+	//If you just need to check if its a aplha, pass "" as a second argument
+	bool	is_str_alpha(const std::string &str, std::string exceptions)
 	{
 		if (str.empty())
 			return false;
 		for (size_t i = 0; i < str.length(); i++)
 		{
-			if (!std::isalpha(str[i]))
+			if (!std::isalpha(str[i]) && !charInString(str[i], exceptions))
 				return false;
 		}
 		return true;
+	}
+
+	void	alert_msg(std::string str)
+	{
+		std::cout << RED << str << std::endl << RESET;
 	}
 }

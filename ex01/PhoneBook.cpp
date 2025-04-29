@@ -14,11 +14,15 @@ PhoneBook::PhoneBook() :
 void	ask_contact_info(std::string &first_name, std::string &last_name, std::string &nickname, \
 		std::string &phone_number, std::string &darkest_secret)
 {
-	utils::getValidAlphaInput("Type the first name: ", first_name);
-	utils::getValidAlphaInput("Type the last name: ", last_name);
-	utils::getValidInput("Type the nickname: ", nickname);
-	utils::getValidNumberInput("Type the phone number: ", phone_number);
-	utils::getValidInput("Type the darkest secret: ", darkest_secret);
+	std::cout << BLUE << "*----------------------------------------------------*" << std::endl;
+	std::cout << "---------------------New Contact!---------------------" << std::endl;
+	std::cout << "*----------------------------------------------------*" << RESET << std::endl;
+	std::cout << std::endl;
+	utils::getValidAlphaInput("Type the first name: ", first_name, WHITESPACE_CHARS);
+	utils::getValidAlphaInput("Type the last name: ", last_name, WHITESPACE_CHARS);
+	utils::getValidInput("Type the nickname: ", nickname, WHITESPACE_CHARS);
+	utils::getValidNumberInput("Type the phone number: ", phone_number, "");
+	utils::getValidInput("Type the darkest secret: ", darkest_secret, "");
 }
 
 void PhoneBook::insert_in_phonebook(std::string _first_name, std::string _last_name, std::string _nickname, std::string _phone_number, std::string _darkest_secret)
@@ -98,13 +102,13 @@ void	PhoneBook::search()
 	if (max_index != -1)
 	{
 	std::cout << std::endl;
-	utils::getValidNumberInput("Type the index to more info: ", index);
+	utils::getValidNumberInput("Type the index to more info: ", index, "");
 	while (true)
 	{
 		if (std::atoi(index.c_str()) >= 0 || std::atoi(index.c_str()) <= max_index)
 				break;
 		std::cout << RED << "The index must be a number between 0 an " << max_index << std::endl << RESET;
-		utils::getValidNumberInput("Type the index to more info: ", index);
+		utils::getValidNumberInput("Type the index to more info: ", index, "");
 	}
 	std::cout << std::endl;
 	this->show_contact(std::atoi(index.c_str()));
