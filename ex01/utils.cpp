@@ -1,9 +1,30 @@
 #include "utils.hpp"
 #include <cctype>
 #include <iostream>
+#include <functional>
 
 namespace utils {
 	
+	void	alert_msg(std::string str, const std::string& color)
+	{
+		std::cout << color << str << std::endl << RESET;
+	}
+
+	void	str_trim(std::string& str)
+	{
+		str.erase(0, str.find_first_not_of(WHITESPACE_CHARS));
+		str.erase(str.find_last_not_of(WHITESPACE_CHARS) + 1);
+	}
+
+	void	handle_eof(void)
+	{
+		if (std::cin.eof())
+			{
+				std::cout << "Input interrupted. Exiting..." << std::endl;
+				std::exit(EXIT_FAILURE);
+			}
+	}
+
 	void	toUpperCase(std::string &str)
 	{
 		size_t i = 0;
@@ -22,31 +43,38 @@ namespace utils {
 			std::cout << prompt;
 			std::getline(std::cin, input);
 
-			input.erase(0, input.find_first_not_of(" \t"));
-			input.erase(input.find_last_not_of(" \t") + 1);
+			handle_eof();
+
+			str_trim(input);
 			
 			if (!input.empty() && !anyCharInString(input, exceptions))
 				break;
-			if (input.empty())
-				utils::alert_msg("Input cannot be empty. Please try again.");
+			else if (input.empty())
+				alert_msg("Input cannot be empty. Please try again.");
 			else
-				utils::alert_msg("Input has invalid characters. Please try again.");
+				alert_msg("Input has invalid characters. Please try again.");
 		}
 	};
-
-	void	getValidNumberInput(const std::string &prompt, std::string &input, std::string others_valids_char)
+	
+	void	getValidIntegerInput(const std::string &prompt, std::string &input, std::string others_valids_char)
 	{
 		while (true)
 		{
 			std::cout << prompt;
 			std::getline(std::cin, input);
+			
+			handle_eof();
 
-			input.erase(0, input.find_first_not_of(" \t"));
-			input.erase(input.find_last_not_of(" \t") + 1);
+			str_trim(input);
 			
 			if (!input.empty() && is_str_number(input, others_valids_char))
 				break;
-			utils::alert_msg("Input must be a number cannot be empty. Please try again.");
+			if (input.empty())
+				alert_msg("Input cannot be empty. Please try again.");
+			else if(others_valids_char.empty())
+				alert_msg("Input must be an integer. Please try again.");
+			else
+				alert_msg("Invalid characters. Please try again.");
 		}
 	};
 
@@ -57,12 +85,18 @@ namespace utils {
 			std::cout << prompt;
 			std::getline(std::cin, input);
 
-			input.erase(0, input.find_first_not_of(" \t"));
-			input.erase(input.find_last_not_of(" \t") + 1);
+			handle_eof();
+
+			str_trim(input);
 			
 			if (!input.empty() && is_str_alpha(input, others_valids_char))
 				break;
-			utils::alert_msg("Input must have only letters and cannot be empty. Please try again.");
+			if (input.empty())
+				alert_msg("Input cannot be empty. Please try again.");
+			else if(others_valids_char.empty())
+				alert_msg("Input must contain only letters. Please try again.");
+			else
+			alert_msg("Invalid characters. Please try again.");
 		}
 	};
 
@@ -83,12 +117,18 @@ namespace utils {
 	//If you just need to check if its a number, pass "" as a second argument
 	bool	is_str_number(const std::string &str, std::string exceptions)
 	{
+		size_t i;
+	
 		if (str.empty())
 			return false;
-		for (size_t i = 0; i < str.length(); i++)
+		i = 0;
+		if (str[0] == '+' || str[0] == '-')
+			i++;
+		while (i < str.length())
 		{
 			if (!std::isdigit(str[i]) && !charInString(str[i], exceptions))
 				return false;
+			i++;
 		}
 		return true;
 	}
@@ -104,10 +144,5 @@ namespace utils {
 				return false;
 		}
 		return true;
-	}
-
-	void	alert_msg(std::string str)
-	{
-		std::cout << RED << str << std::endl << RESET;
 	}
 }

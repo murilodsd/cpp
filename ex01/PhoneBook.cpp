@@ -6,22 +6,20 @@
 PhoneBook::PhoneBook() :
 	index(0)
 {
-	std::cout << BLUE << "*----------------------------------------------------*" << std::endl;
-	std::cout << "-----------------Phone Book created!------------------" << std::endl;
+	std::cout << CYAN << "*----------------------------------------------------*" << std::endl;
+	std::cout << "-----------------Phone Book Created!------------------" << std::endl;
 	std::cout << "*----------------------------------------------------*" << RESET << std::endl;
 };
 
 void	ask_contact_info(std::string &first_name, std::string &last_name, std::string &nickname, \
 		std::string &phone_number, std::string &darkest_secret)
 {
-	std::cout << BLUE << "*----------------------------------------------------*" << std::endl;
-	std::cout << "---------------------New Contact!---------------------" << std::endl;
-	std::cout << "*----------------------------------------------------*" << RESET << std::endl;
+	std::cout << CYAN << "---------------------New Contact!---------------------" << RESET << std::endl;
 	std::cout << std::endl;
 	utils::getValidAlphaInput("Type the first name: ", first_name, WHITESPACE_CHARS);
 	utils::getValidAlphaInput("Type the last name: ", last_name, WHITESPACE_CHARS);
 	utils::getValidInput("Type the nickname: ", nickname, WHITESPACE_CHARS);
-	utils::getValidNumberInput("Type the phone number: ", phone_number, "");
+	utils::getValidIntegerInput("Type the phone number: ", phone_number, "");
 	utils::getValidInput("Type the darkest secret: ", darkest_secret, "");
 }
 
@@ -74,9 +72,11 @@ int	PhoneBook::show_all_contacts()
 	
 	i = 0;
 	if (this->contacts[i].get_first_name() == "")
-		std::cout << YELLOW << "The phonebook is empty" << std::endl << RESET;
+		std::cout << YELLOW << "The phone book is empty" << std::endl << RESET;
 	else
 	{
+		std::cout << CYAN "----------------All Phone Book Contacts---------------" << RESET << std::endl;
+		std::cout << std::endl;
 		std::cout << std::setw(10) << "Index" << "|";
 		std::cout << "First name" << "|";
 		std::cout << std::setw(10) << "Last name" << "|";
@@ -96,22 +96,22 @@ void	PhoneBook::search()
 {
 	std::string	index;
 	int	max_index;
-	
+
 	max_index = this->show_all_contacts();
 	index = "-1";
 	if (max_index != -1)
 	{
-	std::cout << std::endl;
-	utils::getValidNumberInput("Type the index to more info: ", index, "");
-	while (true)
-	{
-		if (std::atoi(index.c_str()) >= 0 || std::atoi(index.c_str()) <= max_index)
-				break;
-		std::cout << RED << "The index must be a number between 0 an " << max_index << std::endl << RESET;
-		utils::getValidNumberInput("Type the index to more info: ", index, "");
-	}
-	std::cout << std::endl;
-	this->show_contact(std::atoi(index.c_str()));
+		std::cout << std::endl;
+		utils::getValidIntegerInput("Type the index to more info: ", index, "");
+		while (true)
+		{
+			if (std::atoi(index.c_str()) >= 0 && std::atoi(index.c_str()) <= max_index)
+					break;
+			std::cout << RED << "The index must be a number between 0 an " << max_index << std::endl << RESET;
+			utils::getValidIntegerInput("Type the index to more info: ", index, "");
+		}
+		std::cout << std::endl;
+		this->show_contact(std::atoi(index.c_str()));
 	}
 }
 

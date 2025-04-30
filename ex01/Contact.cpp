@@ -20,18 +20,18 @@ Contact::Contact(std::string _first_name, std::string _last_name, std::string _n
 	_darkest_secret(_darkest_secret)
 {
 	std::cout << "\n";
-	std::cout << GREEN << "Contact created!" << std::endl << RESET;
+	std::cout << GREEN << "-------------------Contact created!-------------------" << std::endl << RESET;
 };
 
 void	Contact::show_all_contact_info()
 {
-	std::cout << BLUE << "*----------------------------------------------------*" << std::endl;
-	std::cout << BLUE << "First name: " << WHITE << this->get_first_name() << std::endl;
-	std::cout << BLUE << "Last name: " << WHITE << this->get_last_name() << std::endl;
-	std::cout << BLUE << "Nickname: " << WHITE << this->get_nickname() << std::endl;
-	std::cout << BLUE << "Phone number: " << WHITE << this->get_phone_number() << std::endl;
-	std::cout << BLUE << "Darkest secret: " << WHITE << this->get_darkest_secret() << std::endl;
-	std::cout << BLUE << "*----------------------------------------------------*" << RESET << std::endl;
+	std::cout << CYAN << "------------------------------------------------------" << std::endl;
+	std::cout << CYAN << "First name: " << WHITE << this->get_first_name() << std::endl;
+	std::cout << CYAN << "Last name: " << WHITE << this->get_last_name() << std::endl;
+	std::cout << CYAN << "Nickname: " << WHITE << this->get_nickname() << std::endl;
+	std::cout << CYAN << "Phone number: " << WHITE << this->get_phone_number() << std::endl;
+	std::cout << CYAN << "Darkest secret: " << WHITE << this->get_darkest_secret() << std::endl;
+	std::cout << CYAN << "------------------------------------------------------" << RESET << std::endl;
 }
 
 //******************GETTERS******************

@@ -36,6 +36,6 @@ int	main(int argc, char const *argv[])
 			utils::alert_msg("Invalid option!");
 				
 	}
-	std::cout << BLUE << "See you soon!" << std::endl << RESET;
+	std::cout << CYAN << "See you soon!" << std::endl << RESET;
 	return (EXIT_SUCCESS);
 }

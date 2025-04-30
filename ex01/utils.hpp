@@ -17,11 +17,11 @@ namespace utils
 {
     void	toUpperCase(std::string &str);
     void	getValidInput(const std::string &prompt, std::string &input, std::string exceptions);
-    void	getValidNumberInput(const std::string &prompt, std::string &input, std::string others_valids_char);
+    void	getValidIntegerInput(const std::string &prompt, std::string &input, std::string others_valids_char);
     void	getValidAlphaInput(const std::string &prompt, std::string &input, std::string others_valids_char);
     bool	is_str_number(const std::string &str, std::string exceptions);
     bool	is_str_alpha(const std::string &str, std::string exceptions);
     bool	anyCharInString(const std::string& str, const std::string& chars);
     bool	charInString(char c, const std::string& str);
-    void	alert_msg(std::string str);
+    void	alert_msg(std::string str, const std::string& color = RED);
 }
