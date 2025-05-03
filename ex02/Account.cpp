@@ -125,7 +125,7 @@ void	Account::displayAccountsInfos()
 
 void	Account::_displayTimestamp( void )
 {
-	time_t _time = time(nullptr);
+	time_t _time = time(NULL);
 	tm* local_time = localtime(&_time);
 	std::cout << "[" 
 		<< (1900 + local_time->tm_year)
