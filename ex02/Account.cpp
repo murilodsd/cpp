@@ -26,7 +26,11 @@ _nbWithdrawals(0)
 
 Account::~Account(void)
 {
-	std::cout << "Account deleted" << std::endl;
+	_displayTimestamp();
+	std::cout << " ";
+	std::cout << "index:" << this->_accountIndex << ";";
+	std::cout << "amount:" << this->_amount << ";";
+	std::cout << "closed" << std::endl;
 }
 
 
@@ -52,31 +56,48 @@ int	Account::getNbWithdrawals(void)
 }
 int		Account::checkAmount(void)const
 {
-	return (this->_amount);
+	return (_amount);
 }
 
 //SETTERS
 
 void	Account::makeDeposit(int deposit)
 {
+	_displayTimestamp();
+	std::cout << " ";
+	std::cout << "index:" << this->_accountIndex << ";";
+	std::cout << "p_amount:" << this->_amount << ";";
+
 	this->_amount+= deposit;
 	this->_nbDeposits++;
 	_totalAmount += deposit;
 	_totalNbDeposits++;
+
+	std::cout << "deposit:" << deposit << ";";
+	std::cout << "amount:" << this->_amount << ";";
+	std::cout << "nb_deposits:" << this->_nbDeposits << std::endl;
 }
 bool	Account::makeWithdrawal(int withdrawal)
 {
+	_displayTimestamp();
+	std::cout << " ";
+	std::cout << "index:" << this->_accountIndex << ";";
+	std::cout << "p_amount:" << this->_amount << ";";
 	if (this->_amount < withdrawal)
 	{
-		std::cout << "Doesn't have funds." << std::endl;
+		std::cout << "withdrawal:refused" << std::endl;
 		return (false);
 	}
 	else
 	{
 		this->_amount -= withdrawal;
-		this->_nbWithdrawals += withdrawal;
+		this->_nbWithdrawals++;
 		_totalAmount -= withdrawal;
 		_totalNbWithdrawals++;
+
+		std::cout << "withdrawal:" << withdrawal << ";";
+		std::cout << "amount:" << this->_amount << ";";
+		std::cout << "nb_withdrawals:" << this->_nbWithdrawals << std::endl;
 	}
 	return (true);
 }
@@ -84,7 +105,6 @@ bool	Account::makeWithdrawal(int withdrawal)
 //DISPLAY INFOS
 void	Account::displayStatus(void)const
 {
-	//[19920104_091532] index:0;amount:42;deposits:0;withdrawals:0
 	_displayTimestamp();
 	std::cout << " ";
 	std::cout << "index:" << this->_accountIndex << ";";
@@ -95,7 +115,6 @@ void	Account::displayStatus(void)const
 
 void	Account::displayAccountsInfos()
 {
-	//[19920104_091532] accounts:8;total:21524;deposits:8;withdrawals:0
 	_displayTimestamp();
 	std::cout << " ";
 	std::cout << "accounts:" << getNbAccounts() << ";";
@@ -106,13 +125,13 @@ void	Account::displayAccountsInfos()
 
 void	Account::_displayTimestamp( void )
 {
-	time_t result = time(nullptr);
-	tm* local_time = localtime(&result);
+	time_t _time = time(nullptr);
+	tm* local_time = localtime(&_time);
 	std::cout << "[" 
-			  << (1900 + local_time->tm_year)
-			  << std::setfill('0') << std::setw(2) << (1 + local_time->tm_mon)
-			  << std::setfill('0') << std::setw(2) << local_time->tm_mday << "_"
-			  << std::setfill('0') << std::setw(2) << local_time->tm_hour
-			  << std::setfill('0') << std::setw(2) << local_time->tm_min
-			  << std::setfill('0') << std::setw(2) << local_time->tm_sec << "]";
+		<< (1900 + local_time->tm_year)
+		<< std::setfill('0') << std::setw(2) << (1 + local_time->tm_mon)
+		<< std::setfill('0') << std::setw(2) << local_time->tm_mday << "_"
+		<< std::setfill('0') << std::setw(2) << local_time->tm_hour
+		<< std::setfill('0') << std::setw(2) << local_time->tm_min
+		<< std::setfill('0') << std::setw(2) << local_time->tm_sec << "]";
 }
