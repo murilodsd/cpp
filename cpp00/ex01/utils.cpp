@@ -2,10 +2,11 @@
 #include <cctype>
 #include <iostream>
 #include <functional>
+#include <cstdlib>
 
 namespace utils {
 	
-	void	alert_msg(std::string str, const std::string& color)
+	void	alert_msg(const std::string& str, const std::string& color)
 	{
 		std::cout << color << str << std::endl << RESET;
 	}

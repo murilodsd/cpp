@@ -15,13 +15,13 @@
 
 namespace utils
 {
-    void	toUpperCase(std::string &str);
+    void	toUpperCase(std::string& str);
     void	getValidInput(const std::string &prompt, std::string &input, std::string exceptions);
-    void	getValidIntegerInput(const std::string &prompt, std::string &input, std::string others_valids_char);
-    void	getValidAlphaInput(const std::string &prompt, std::string &input, std::string others_valids_char);
-    bool	is_str_number(const std::string &str, std::string exceptions);
-    bool	is_str_alpha(const std::string &str, std::string exceptions);
+    void	getValidIntegerInput(const std::string &prompt, std::string &input, std::string additional_valid_chars);
+    void	getValidAlphaInput(const std::string &prompt, std::string &input, std::string additional_valid_chars);
+    bool	is_str_number(const std::string &str, std::string allowed_chars);
+    bool	is_str_alpha(const std::string &str, std::string allowed_chars);
     bool	anyCharInString(const std::string& str, const std::string& chars);
     bool	charInString(char c, const std::string& str);
-    void	alert_msg(std::string str, const std::string& color = RED);
+    void	alert_msg(const std::string& str, const std::string& color = RED);
 }
