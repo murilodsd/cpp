@@ -1,6 +1,6 @@
 NAME=zombieHorde
 CPP=c++
-CPP_FLAGS=-Wall -Werror -Wall -g -std=c++98
+CPP_FLAGS=-Wall -Werror -Wextra -g -std=c++98
 SRC_PATH=.
 SRC_FILES=main.cpp \
 	Zombie.cpp \
