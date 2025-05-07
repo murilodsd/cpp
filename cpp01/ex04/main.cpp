@@ -6,14 +6,27 @@
 #include <cctype>
 #include <functional>
 
-void validateArguments(int argc)
+typedef struct arguments
 {
-    if (argc != 4)
-    {
-        std::cerr << RED << "Error: Invalid number of arguments.\n"
-                  << "Usage: ./program <filename> <string_to_replace> <new_string>" << RESET << std::endl;
-        std::exit(EXIT_FAILURE);
-    }
+	std::string inputFileName;
+	std::string strToBeReplaced;
+	std::string strNew;
+
+} s_arguments;
+
+void handleArguments(int argc, std::string strToBeReplaced)
+{
+	if (argc != 4)
+	{
+		std::cerr << RED << "Error: Invalid number of arguments.\n"
+			<< "Usage: ./program <filename> <string_to_replace> <new_string>" << RESET << std::endl;
+		std::exit(EXIT_FAILURE);
+	}
+	if (strToBeReplaced.empty())
+	{
+		std::cerr << "Error: The string to replace cannot be empty." << std::endl;
+		std::exit(EXIT_FAILURE);
+	}
 }
 
 void openInputFile(std::ifstream &file_in, const char *filename, std::ios_base::openmode mode)
@@ -36,30 +49,56 @@ void openOutputFile(std::ofstream &file_out, const char *filename, std::ios_base
     }
 }
 
+void	setUpFiles(char *argv[], std::ifstream &file_in, std::ofstream &file_out)
+{
+	std::string inputFileName = argv[1];
+	std::string outputFileName = inputFileName + std::string("replace");
+	openInputFile(file_in, inputFileName.c_str(), std::ios::in);
+	openOutputFile(file_out, outputFileName.c_str(), std::ios::out);
+}
+
+void	replace(std::ifstream &file_in, std::ofstream &file_out, \
+	const std::string &strToBeReplaced, const std::string &strNew)
+{
+	std::string line;
+	size_t	pos;
+	size_t	end = 0;
+	while (true)
+	{
+		std::getline(file_in, line);
+		while (true)
+		{
+			pos = end;
+			end = line.find(strToBeReplaced, pos);
+			if (end == std::string::npos)
+			{
+				file_out << line.substr(pos);
+				end = 0;
+				break ;
+			}
+			file_out << line.substr(pos, end - pos);
+			file_out << strNew;
+			end += strToBeReplaced.size();
+		}
+		if (file_in.eof())
+			break;
+		file_out << std::endl;	
+	}
+}
 
 int main(int argc, char *argv[])
 {
-	validateArguments(argc);
-
+	std::string strToBeReplaced = argv[2];
 	
-	std::string inputFileName = argv[1];
+	handleArguments(argc, strToBeReplaced);
+	
 	std::ifstream file_in;
-	openInputFile(file_in, argv[1], std::ios::in);
-	std::string outputFileName = argv[1] + std::string("replace");
 	std::ofstream file_out;
-	openOutputFile(file_out, outputFileName.c_str(), std::ios::out);
+	setUpFiles(argv, file_in, file_out);
 	
-	while (true)
-	{
-		std::string line;
-		std::getline(file_in, line);
-		std::cout << line;
-		file_out << line;
-		if (file_in.eof())
-			break;
-		std::cout << std::endl;
-		file_out << std::endl;	
-	}
+	std::string strNew = argv[3];
+	replace(file_in, file_out, strToBeReplaced, strNew);
+	
 	file_in.close();
 	file_out.close();
 	return (EXIT_SUCCESS);
