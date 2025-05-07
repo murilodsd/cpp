@@ -63,20 +63,6 @@ int		main( void ) {
 	return 0;
 }
 
-/* int main(int argc, char const *argv[])
-{
-	Account::t account(42);
-	Account::t account2(24);
-	account.makeDeposit(100);
-	account2.makeWithdrawal(12);
-	account2.makeWithdrawal(100);
-	account.displayStatus();
-	account2.displayStatus();
-	Account::displayAccountsInfos();
-	return 0;
-} */
-
-
 
 // ************************************************************************** //
 // vim: set ts=4 sw=4 tw=80 noexpandtab:                                      //
