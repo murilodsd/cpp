@@ -1,8 +1,9 @@
-NAME=program
+NAME=harlFilter
 CXX=c++
 CXX_FLAGS=-Wall -Werror -Wextra -g -std=c++98
 SRC_PATH=.
-SRC_FILES=main.cpp
+SRC_FILES=main.cpp \
+	Harl.cpp
 OBJ_PATH=.
 OBJ_FILES=$(SRC_FILES:.cpp=.o)
 

@@ -13,11 +13,11 @@ all: $(NAME)
 
 $(NAME): $(OBJ_PATH)/$(OBJ_FILES)
 	@echo "Compiling the executable $(NAME)..."
-	@$(CPP) $(CPP_FLAGS) $(OBJ_PATH)/$(OBJ_FILES) -o $(NAME)
+	@$(CXX) $(CXX_FLAGS) $(OBJ_PATH)/$(OBJ_FILES) -o $(NAME)
 	@echo "Executable $(NAME) compiled successfully."
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.cpp
-	@$(CPP) $(CPP_FLAGS) -c $< -o $@
+	@$(CXX) $(CXX_FLAGS) -c $< -o $@
 
 clean:
 	@rm -rf $(OBJ_PATH)/$(OBJ_FILES)
