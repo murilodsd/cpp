@@ -1,6 +1,6 @@
 NAME=harlFilter
 CXX=c++
-CXX_FLAGS=-Wall -Werror -Wextra -g -std=c++98
+CXX_FLAGS=-Wall -Werror -Wextra -g -std=c++98 -Wno-implicit-fallthrough
 SRC_PATH=.
 SRC_FILES=main.cpp \
 	Harl.cpp
