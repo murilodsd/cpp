@@ -24,4 +24,3 @@ public:
 	void	announce();
 	void	set_name(std::string _name);
 };
-

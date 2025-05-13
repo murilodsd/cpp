@@ -1,6 +1,7 @@
 #include "Weapon.hpp"
 #include "HumanA.hpp"
 #include "HumanB.hpp"
+#include <cstdlib>
 
 int main()
 {
@@ -21,5 +22,5 @@ int main()
 		club.setType("some other type of club");
 		jim.attack();
 	}
-	return 0;
+	return (EXIT_SUCCESS);
 }

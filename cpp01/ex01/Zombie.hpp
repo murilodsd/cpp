@@ -16,12 +16,12 @@
 
 class Zombie
 {
-private:
-	std::string name;
-public:
-	Zombie();
-	~Zombie();
-	void	announce();
-	void	set_name(std::string _name);
+	private:
+		std::string name;
+	public:
+		Zombie(void);
+		~Zombie(void);
+		void	announce(void);
+		void	set_name(std::string _name);
 };
 

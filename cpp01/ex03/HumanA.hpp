@@ -8,6 +8,7 @@ HumanA and HumanB are almost identical except for these two small details:
 • HumanB may not always have a weapon, whereas HumanA will always be
 armed 
 */
+#pragma once
 #include <string>
 #include "Weapon.hpp"
 
@@ -22,11 +23,11 @@ armed
 
 class HumanA
 {
-private:
-	std::string name;
-	Weapon &weapon;
-public:
-	HumanA(std::string name, Weapon &weapon);
-	~HumanA();
-	void	attack();
+	private:
+		std::string name;
+		Weapon &weapon;
+	public:
+		HumanA(std::string name, Weapon &weapon);
+		~HumanA();
+		void	attack();
 };

@@ -18,10 +18,13 @@ HumanA::HumanA(std::string name, Weapon &weapon)
 name(name),
 weapon(weapon)
 {
+	std::cout << GREEN << "HumanA " << name << " has been created." << RESET << std::endl;
 };
 
 HumanA::~HumanA()
 {
+	std::cout << RED << "HumanA " << name << " has been destroyed.\n" << RESET << std::endl;
+
 };
 
 void	HumanA::attack()

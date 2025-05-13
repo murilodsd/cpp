@@ -18,10 +18,12 @@ HumanB::HumanB(std::string name)
 name(name),
 weapon(NULL)
 {
+	std::cout << GREEN << "HumanB " << name << " has been created." << RESET << std::endl;
 };
 
 HumanB::~HumanB()
 {
+	std::cout << RED << "HumanB " << name << " has been destroyed.\n" << RESET << std::endl;
 };
 
 void	HumanB::attack()
