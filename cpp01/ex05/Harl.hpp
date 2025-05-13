@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 
+#define RED "\033[31m"
+
 class Harl;
 
 typedef void(Harl::*t_ptrFunc)(void);
@@ -21,10 +23,7 @@ class Harl
 		void error( void );
 
 	public:
-		Harl();
-		~Harl();
+		Harl( void );
+		~Harl( void );
 		void complain( std::string level );
 };
-
-
-

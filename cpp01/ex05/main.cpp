@@ -41,6 +41,10 @@ int main()
 	harl.complain("ERROR");
 	print_msg(""); //line break
 
+	print_msg("[DOESNTEXIST]", MAGENTA);
+	harl.complain("DOESNTEXIST");
+	print_msg(""); //line break
+
 	print_msg("All complaints have been processed.", CYAN);
 
 	return (EXIT_SUCCESS);

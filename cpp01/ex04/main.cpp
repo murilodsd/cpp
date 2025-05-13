@@ -4,7 +4,7 @@
 #include "utils.hpp"
 #include <fstream>
 #include <cctype>
-#include <functional>
+
 
 typedef struct arguments
 {
@@ -52,7 +52,8 @@ void openOutputFile(std::ofstream &file_out, const char *filename, std::ios_base
 void	setUpFiles(char *argv[], std::ifstream &file_in, std::ofstream &file_out)
 {
 	std::string inputFileName = argv[1];
-	std::string outputFileName = inputFileName + std::string("replace");
+	std::string outputFileName = inputFileName + std::string(".replace");
+	
 	openInputFile(file_in, inputFileName.c_str(), std::ios::in);
 	openOutputFile(file_out, outputFileName.c_str(), std::ios::out);
 }

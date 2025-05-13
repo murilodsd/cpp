@@ -49,6 +49,10 @@ void Harl::complain( std::string level )
 	for(int i = 0; i < 4; i++)
 	{
 		if (this->array_complain[i].level == level)
+		{
 			(this->*(array_complain[i].ptrFunc))();
-	}	
+			return ;
+		}
+	}
+	std::cout << RED << "Input must be one of the following strings: 'DEBUG', 'INFO', 'WARNING', 'ERROR'" << std::endl;	
 }
