@@ -54,17 +54,6 @@ Fixed &Fixed::operator=(const Fixed &other)
 	return *this;
 };
 
-// ========== Comparison Operator Overload ==========
-bool	Fixed::operator>(const Fixed &other) const
-{
-	if (this != &other)
-	{
-		print_msg("Copy assignment operator called");
-		this->_fixedPointNumber = other.getRawBits();
-	}
-	return *this;
-};
-
 // ==================== Destructor =====================
 Fixed::~Fixed()
 {

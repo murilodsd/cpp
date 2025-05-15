@@ -1,5 +1,4 @@
 #pragma once
-#include <ostream>
 
 #define RESET "\033[0m"
 #define BOLD "\033[1m"
@@ -33,7 +32,32 @@ class Fixed
 	// Copy assignment operator overload
 	Fixed &operator=(const Fixed &other);
 
+	// Comparison Operators overload
 	bool	operator>(const Fixed &other) const;
+	bool	operator>=(const Fixed &other) const;
+	bool	operator<(const Fixed &other) const;
+	bool	operator<=(const Fixed &other) const;
+	bool	operator==(const Fixed &other) const;
+	bool	operator!=(const Fixed &other) const;
+
+	// Arithmetic operators overload
+	Fixed	operator+(const Fixed &other) const;
+	Fixed	operator-(const Fixed &other) const;
+	Fixed	operator*(const Fixed &other) const;
+	Fixed	operator/(const Fixed &other) const;
+
+	// Increment/decrement operators overload
+	Fixed	&operator++();
+	Fixed	&operator--();
+	Fixed	operator++(int);
+	Fixed	operator--(int);
+
+	// min/max functions
+	static Fixed	&min(Fixed &fixedNum1, Fixed &fixedNum2);
+	static const Fixed	&min(const Fixed &fixedNum1, const Fixed &fixedNum2);
+	static Fixed	&max(Fixed &fixedNum1, Fixed &fixedNum2);
+	static const Fixed	&max(const Fixed &fixedNum1, const Fixed &fixedNum2);
+
 
 	// Destructor
 	~Fixed();
