@@ -30,6 +30,17 @@ void	print_msg(const std::string& str, const std::string& color = WHITE)
 	std::cout << color << str << std::endl << RESET;
 }
 
+void	toUpperCase(std::string &str)
+	{
+		size_t i = 0;
+
+		while (i < str.length())
+		{
+			str[i] = std::toupper(str[i]);
+			i++;
+		}
+	};
+
 // ================== Member Functions =================
 
 void Harl::debug( void )
@@ -65,17 +76,17 @@ void Harl::complain( std::string level )
 
 	switch (i)
 	{
-	case 0:
-		this->debug();
-	case 1:
-		this->info();
-	case 2:
-		this->warning();
-	case 3:
-		this->error();
-		break;
-	default:
-		print_msg("[ Probably complaining about insignificant problems ]", BLUE);
-		break;
+		case 0:
+			this->debug();
+		case 1:
+			this->info();
+		case 2:
+			this->warning();
+		case 3:
+			this->error();
+			break;
+		default:
+			print_msg("[ Probably complaining about insignificant problems ]", BLUE);
+			break;
 	}
 }

@@ -5,7 +5,6 @@
 #include <fstream>
 #include <cctype>
 
-
 typedef struct arguments
 {
 	std::string inputFileName;
