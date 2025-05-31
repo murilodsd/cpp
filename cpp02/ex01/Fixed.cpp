@@ -14,7 +14,7 @@ std::ostream &operator<<(std::ostream &out, const Fixed &fixed)
 {
     out << fixed.toFloat();
     return (out);
-}
+};
 
 // ==================== Constructor ====================
 Fixed::Fixed()
@@ -33,6 +33,8 @@ Fixed::Fixed(const int number)
 Fixed::Fixed(const float number)
 {
 	print_msg("Float constructor called");
+	// Bitwise shifting cannot be directly used with float, so we multiply by the equivalent power of 2
+	// 2 ^ _fractionalBits = (1 << _fractionalBits)
 	_fixedPointNumber = (int) roundf((number * (1 << _fractionalBits)));
 };
 
@@ -81,9 +83,9 @@ int	Fixed::getRawBits(void) const
 float	Fixed::toFloat( void ) const
 {
 	return (((float) _fixedPointNumber) / (1 << _fractionalBits));
-}
+};
 
 int	Fixed::toInt( void ) const
 {
 	return (_fixedPointNumber >> _fractionalBits);
-}
+};

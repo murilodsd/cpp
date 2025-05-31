@@ -17,13 +17,6 @@ _fixedPointNumber(0)
 	print_msg("Default constructor called");
 };
 
-// ================= Copy Constructor ==================
-Fixed::Fixed(const Fixed &other)
-{
-	print_msg("Copy constructor called");
-	*this = other;
-};
-
 // ========== Copy Assignment Operator Overload ==========
 Fixed &Fixed::operator=(const Fixed &other)
 {
@@ -33,6 +26,13 @@ Fixed &Fixed::operator=(const Fixed &other)
 		this->_fixedPointNumber = other.getRawBits();
 	}
 	return *this;
+};
+
+// ================= Copy Constructor ==================
+Fixed::Fixed(const Fixed &other)
+{
+	print_msg("Copy constructor called");
+	*this = other;
 };
 
 // ==================== Destructor =====================
