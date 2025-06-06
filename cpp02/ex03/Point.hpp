@@ -4,12 +4,12 @@
 class Point
 {
 private:
-	Fixed x;
-	Fixed y;
+	const Fixed x;
+	const Fixed y;
 public:
 	// Default constructor
 	Point();
-	Point(float x, float y);
+	Point(const float x, const float y);
 
 	// Copy constructor
 	Point(const Point &other);

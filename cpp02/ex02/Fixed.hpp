@@ -1,4 +1,5 @@
 #pragma once
+#include <ostream>
 
 #define RESET "\033[0m"
 #define BOLD "\033[1m"
@@ -63,7 +64,7 @@ class Fixed
 	~Fixed();
 
 	int	getRawBits( void ) const;
-	void 	setRawBits( int const raw );
+	void 	setRawBits( const int &raw );
 
 	float	toFloat( void ) const;
 	int	toInt( void ) const;

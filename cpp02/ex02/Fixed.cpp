@@ -21,25 +21,21 @@ Fixed::Fixed()
 :
 _fixedPointNumber(0)
 {
-	print_msg("Default constructor called");
 };
 
 Fixed::Fixed(const int number)
 {
-	print_msg("Int constructor called");
 	_fixedPointNumber = number << _fractionalBits;
 };
 
 Fixed::Fixed(const float number)
 {
-	print_msg("Float constructor called");
 	_fixedPointNumber = (int) roundf((number * (1 << _fractionalBits)));
 };
 
 // ================= Copy Constructor ==================
 Fixed::Fixed(const Fixed &other)
 {
-	print_msg("Copy constructor called");
 	*this = other;
 };
 
@@ -48,7 +44,6 @@ Fixed &Fixed::operator=(const Fixed &other)
 {
 	if (this != &other)
 	{
-		print_msg("Copy assignment operator called");
 		this->_fixedPointNumber = other.getRawBits();
 	}
 	return *this;
@@ -178,14 +173,12 @@ const Fixed	&Fixed::max(const Fixed &fixedNum1, const Fixed &fixedNum2)
 // ==================== Destructor =====================
 Fixed::~Fixed()
 {
-	print_msg("Destructor called");
 };
 
 // ===================== Setters =======================
 
-void	Fixed::setRawBits(int const raw)
+void	Fixed::setRawBits(const int &raw)
 {
-	print_msg("setRawBits member function called");
 	this->_fixedPointNumber = raw;
 };
 
@@ -193,7 +186,6 @@ void	Fixed::setRawBits(int const raw)
 
 int	Fixed::getRawBits(void) const
 {
-	print_msg("getRawBits member function called");
 	return (this->_fixedPointNumber);
 };
 

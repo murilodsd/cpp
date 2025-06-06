@@ -62,7 +62,7 @@ Fixed::~Fixed()
 
 // ===================== Setters =======================
 
-void	Fixed::setRawBits(int const raw)
+void	Fixed::setRawBits(const int &raw)
 {
 	print_msg("setRawBits member function called");
 	this->_fixedPointNumber = raw;

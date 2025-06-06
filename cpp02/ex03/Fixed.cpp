@@ -168,7 +168,7 @@ Fixed::~Fixed()
 
 // ===================== Setters =======================
 
-void	Fixed::setRawBits(int const raw)
+void	Fixed::setRawBits(const int &raw)
 {
 	this->_fixedPointNumber = raw;
 };
