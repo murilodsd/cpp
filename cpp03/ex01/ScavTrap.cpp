@@ -20,7 +20,8 @@ void ScavTrap::attack(const std::string& target)
 
 void ScavTrap::guardGate(void)
 {
-std::cout << YELLOW << "ScavTrap " << _name << " is now in Gate keeper mode." << RESET << std::endl;}
+	std::cout << YELLOW << "ScavTrap " << _name << " is now in Gate keeper mode." << RESET << std::endl;
+}
 
 // ==================== Constructors ====================
 ScavTrap::ScavTrap()

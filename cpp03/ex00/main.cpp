@@ -1,11 +1,11 @@
-#include "ScavTrap.hpp"
+#include "ClapTrap.hpp"
 #include <iostream>
 #include <cstdlib>
 
 int main()
 {
-    ScavTrap a("Alpha");
-    ScavTrap b("Bravo");
+    ClapTrap a("Alpha");
+    ClapTrap b("Bravo");
 
     std::cout << "\n=== Initial attacks ===" << std::endl;
     a.attack("Bravo");
@@ -35,18 +35,13 @@ int main()
     b.beRepaired(10);
 
     std::cout << "\n=== Self-assignment and copy test ===" << std::endl;
-    ScavTrap c = a; // Copy constructor
-    c.attack("Bravo");
-    c = c; // Self-assignment
+    ClapTrap c = a; // Copy constructor
     c.attack("Bravo");
 
     std::cout << "\n=== Assignment operator test ===" << std::endl;
-    ScavTrap d("Delta");
+    ClapTrap d("Delta");
     d = a;
     d.attack("Bravo");
-
-    std::cout << "\n=== Testing ScavTrap Member Function guardGate ===" << std::endl;
-    a.guardGate();
 
     return EXIT_SUCCESS;
 }

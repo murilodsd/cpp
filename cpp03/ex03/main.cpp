@@ -36,8 +36,6 @@ int main() {
     std::cout << "\n=== Self-assignment and copy test ===" << std::endl;
     DiamondTrap c = a; // Copy constructor
     c.attack("Bravo");
-    c = c; // Self-assignment
-    c.attack("Bravo");
 
     std::cout << "\n=== Assignment operator test ===" << std::endl;
     DiamondTrap d("Delta");

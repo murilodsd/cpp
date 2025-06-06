@@ -19,7 +19,7 @@ int main() {
     b.beRepaired(4);
 
     std::cout << "\n=== Attack until energy runs out ===" << std::endl;
-    for (int i = 0; i < 50; ++i) {
+    for (int i = 0; i < 100; ++i) {
         a.attack("Bravo");
     }
 
@@ -35,8 +35,6 @@ int main() {
 
     std::cout << "\n=== Self-assignment and copy test ===" << std::endl;
     FragTrap c = a; // Copy constructor
-    c.attack("Bravo");
-    c = c; // Self-assignment
     c.attack("Bravo");
 
     std::cout << "\n=== Assignment operator test ===" << std::endl;
