@@ -4,6 +4,8 @@
 class FragTrap : virtual public ClapTrap
 {
 	public:
+		static const unsigned int DEFAULT_HP = 100;
+		static const unsigned int DEFAULT_AD = 30;
 		// Default constructor
 		FragTrap();
 		FragTrap(std::string name);

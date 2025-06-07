@@ -52,12 +52,7 @@ _hitPoints(10),
 _energyPoints(10),
 _attackDamage(0)
 {
-	std::cout << GREEN << "ClapTrap default constructor called: "
-			  << "name=" << _name << ", "
-			  << "hitPoints=" << _hitPoints << ", "
-			  << "energyPoints=" << _energyPoints << ", "
-			  << "attackDamage=" << _attackDamage
-			  << RESET << std::endl;
+	std::cout << GREEN << "ClapTrap default constructor called" << std::endl;
 }
 
 ClapTrap::ClapTrap(std::string name)
@@ -67,12 +62,7 @@ _hitPoints(10),
 _energyPoints(10),
 _attackDamage(0)
 {
-	std::cout << GREEN << "ClapTrap parameterized constructor called: "
-			  << "name=" << _name << ", "
-			  << "hitPoints=" << _hitPoints << ", "
-			  << "energyPoints=" << _energyPoints << ", "
-			  << "attackDamage=" << _attackDamage
-			  << RESET << std::endl;
+	std::cout << GREEN << "ClapTrap parameterized constructor called" << std::endl;
 }
 
 ClapTrap::ClapTrap(std::string name, unsigned int hitPoints, unsigned int energyPoints, unsigned int attackDamage)

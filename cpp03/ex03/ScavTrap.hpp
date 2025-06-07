@@ -4,6 +4,7 @@
 class ScavTrap : virtual public ClapTrap
 {
 	public:
+		static const unsigned int DEFAULT_EP = 50;
 		// Default constructor
 		ScavTrap();
 		ScavTrap(std::string name);

@@ -11,7 +11,7 @@ class DiamondTrap : public ScavTrap, public FragTrap
 	public:
 		// Default constructor
 		DiamondTrap();
-		DiamondTrap(std::string name);
+		DiamondTrap(const std::string& name);
 
 		// Copy constructor
 		DiamondTrap(const DiamondTrap &other);

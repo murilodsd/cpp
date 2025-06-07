@@ -16,22 +16,32 @@ void DiamondTrap::whoAmI(void)
 // ==================== Constructors ====================
 DiamondTrap::DiamondTrap()
 :
-ClapTrap("Default_clap_name", 100, 50, 30),
+ClapTrap("Default_clap_name", DEFAULT_HP, DEFAULT_EP, DEFAULT_AD),
 ScavTrap(),
 FragTrap(),
 _name("Default")
 {
-	std::cout << GREEN << "DiamondTrap default constructor called" << RESET << std::endl;
+	std::cout << GREEN << "DiamondTrap default constructor called"
+			<< "name=" << _name << ", "
+			<< "hitPoints=" << _hitPoints << ", "
+			<< "energyPoints=" << _energyPoints << ", "
+			<< "attackDamage=" << _attackDamage
+			<< RESET << std::endl;
 };
 
-DiamondTrap::DiamondTrap(std::string name)
+DiamondTrap::DiamondTrap(const std::string& name)
 :
-ClapTrap(name + "_clap_name", 100, 50, 30),
+ClapTrap(name + "_clap_name", DEFAULT_HP, DEFAULT_EP, DEFAULT_AD),
 ScavTrap(),
 FragTrap(),
 _name(name)
 {
-    	std::cout << GREEN << "DiamondTrap parameterized constructor called" << RESET << std::endl;
+    	std::cout << GREEN << "DiamondTrap parameterized constructor called" 
+			<< "name=" << _name << ", "
+			<< "hitPoints=" << _hitPoints << ", "
+			<< "energyPoints=" << _energyPoints << ", "
+			<< "attackDamage=" << _attackDamage
+			<< RESET << std::endl;
 };
 
 // ================= Copy Constructor ==================

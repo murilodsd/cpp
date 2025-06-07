@@ -26,14 +26,14 @@ void FragTrap::highFivesGuys(void)
 // ==================== Constructors ====================
 FragTrap::FragTrap()
 :
-ClapTrap("Default", 100, 100, 30)
+ClapTrap("Default", DEFAULT_HP, 100, DEFAULT_AD)
 {
 	std::cout << GREEN << "FragTrap default constructor called" << RESET << std::endl;
 };
 
 FragTrap::FragTrap(std::string name)
 :
-ClapTrap(name, 100, 100, 30)
+ClapTrap(name, DEFAULT_HP, 100, DEFAULT_AD)
 {
     	std::cout << GREEN << "FragTrap parameterized constructor called" << RESET << std::endl;
 };

@@ -26,14 +26,14 @@ void ScavTrap::guardGate(void)
 // ==================== Constructors ====================
 ScavTrap::ScavTrap()
 :
-ClapTrap("Default", 100, 50, 20)
+ClapTrap("Default", 100, DEFAULT_EP, 20)
 {
 	std::cout << GREEN << "ScavTrap default constructor called" << RESET << std::endl;
 };
 
 ScavTrap::ScavTrap(std::string name)
 :
-ClapTrap(name, 100, 50, 20)
+ClapTrap(name, 100, DEFAULT_EP, 20)
 {
     	std::cout << GREEN << "ScavTrap parameterized constructor called" << RESET << std::endl;
 };
