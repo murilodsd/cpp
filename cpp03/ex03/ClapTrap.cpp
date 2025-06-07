@@ -72,12 +72,7 @@ _hitPoints(hitPoints),
 _energyPoints(energyPoints),
 _attackDamage(attackDamage)
 {
-	std::cout << GREEN << "ClapTrap parameterized constructor called: "
-			  << "name=" << _name << ", "
-			  << "hitPoints=" << _hitPoints << ", "
-			  << "energyPoints=" << _energyPoints << ", "
-			  << "attackDamage=" << _attackDamage
-			  << RESET << std::endl;
+	std::cout << GREEN << "ClapTrap parameterized constructor called" << RESET << std::endl;
 }
 
 // ================= Copy Constructor ==================

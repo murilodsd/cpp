@@ -36,7 +36,7 @@ ScavTrap(),
 FragTrap(),
 _name(name)
 {
-    	std::cout << GREEN << "DiamondTrap parameterized constructor called" 
+    	std::cout << GREEN << "DiamondTrap parameterized constructor called: " 
 			<< "name=" << _name << ", "
 			<< "hitPoints=" << _hitPoints << ", "
 			<< "energyPoints=" << _energyPoints << ", "
