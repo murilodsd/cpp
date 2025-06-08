@@ -1,5 +1,4 @@
 #pragma once
-#include <iostream>
 #include <string>
 
 #define RESET "\033[0m"
@@ -13,21 +12,27 @@
 #define CYAN "\033[36m"
 #define WHITE "\033[37m"
 
-class Brain
+class AAnimal
 {
-	private:
-		std::string ideas[100];
-
+	protected:
+		std::string _type;
 	public:
 		// Default constructor
-		Brain();
+		AAnimal();
+		AAnimal(std::string type);
 
 		// Copy constructor
-		Brain(const Brain &other);
+		AAnimal(const AAnimal &other);
 
 		// Copy assignment operator overload
-		Brain &operator=(const Brain &other);
+		AAnimal &operator=(const AAnimal &other);
 
 		// Destructor
-		~Brain();
+		virtual ~AAnimal();
+
+		//Getters
+		const std::string& getType() const;
+
+		//Member functions
+		virtual void makeSound() const = 0;
 };

@@ -5,7 +5,7 @@
 // ==================== Constructors ====================
 Cat::Cat()
 :
-Animal("Cat")
+AAnimal("Cat")
 {
 	std::cout << GREEN << "Cat default constructor called!" << RESET << std::endl;
 }
@@ -13,7 +13,7 @@ Animal("Cat")
 // ================= Copy Constructor ==================
 Cat::Cat(const Cat &other)
 :
-Animal(other._type)
+AAnimal(other._type)
 {
 	std::cout << GREEN << "Cat copy constructor called!" << RESET << std::endl;
 }

@@ -5,7 +5,7 @@
 // ==================== Constructors ====================
 Dog::Dog()
 :
-Animal("Dog")
+AAnimal("Dog")
 {
 	brain = new Brain();
 	std::cout << GREEN << "Dog default constructor called!" << RESET << std::endl;
@@ -14,7 +14,7 @@ Animal("Dog")
 // ================= Copy Constructor ==================
 Dog::Dog(const Dog &other)
 :
-Animal(other._type)
+AAnimal(other._type)
 {
 	std::cout << GREEN << "Dog copy constructor called!" << RESET << std::endl;
 }

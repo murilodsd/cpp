@@ -1,6 +1,6 @@
 #pragma once
-#include <iostream>
 #include <string>
+#include "WrongAnimal.hpp"
 
 #define RESET "\033[0m"
 #define BOLD "\033[1m"
@@ -13,21 +13,21 @@
 #define CYAN "\033[36m"
 #define WHITE "\033[37m"
 
-class Brain
+class WrongCat : public WrongAnimal
 {
-	private:
-		std::string ideas[100];
-
 	public:
 		// Default constructor
-		Brain();
+		WrongCat();
 
 		// Copy constructor
-		Brain(const Brain &other);
+		WrongCat(const WrongCat &other);
 
 		// Copy assignment operator overload
-		Brain &operator=(const Brain &other);
+		WrongCat &operator=(const WrongCat &other);
 
 		// Destructor
-		~Brain();
+		~WrongCat();
+
+		//Member functions
+		void makeSound() const;
 };
