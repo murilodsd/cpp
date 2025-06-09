@@ -7,7 +7,8 @@ SRC_FILES=main.cpp \
 	Cat.cpp \
 	WrongAnimal.cpp \
 	WrongCat.cpp \
-	Dog.cpp 
+	Dog.cpp \
+	Brain.cpp
 OBJ_PATH=.
 OBJ_FILES=$(SRC_FILES:.cpp=.o)
 

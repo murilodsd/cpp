@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "Animal.hpp"
+#include "Brain.hpp"
 
 #define RESET "\033[0m"
 #define BOLD "\033[1m"
@@ -15,6 +16,8 @@
 
 class Cat : public Animal
 {
+	private:
+		Brain* brain;
 	public:
 		// Default constructor
 		Cat();
@@ -30,4 +33,5 @@ class Cat : public Animal
 
 		//Member functions
 		void makeSound() const;
+		Brain* getBrain() const;
 };

@@ -7,6 +7,7 @@ Cat::Cat()
 :
 Animal("Cat")
 {
+	brain = new Brain();
 	std::cout << GREEN << "Cat default constructor called!" << RESET << std::endl;
 }
 
@@ -15,6 +16,7 @@ Cat::Cat(const Cat &other)
 :
 Animal(other._type)
 {
+	brain = new Brain(*other.brain);
 	std::cout << GREEN << "Cat copy constructor called!" << RESET << std::endl;
 }
 
@@ -25,6 +27,8 @@ Cat &Cat::operator=(const Cat &other)
 	if (this != &other)
 	{
 		_type = other._type;
+		delete brain;
+		brain = new Brain(*other.brain);
 	}
 	return *this;
 }
@@ -32,6 +36,7 @@ Cat &Cat::operator=(const Cat &other)
 // ==================== Destructor =====================
 Cat::~Cat()
 {
+	delete brain;
 	std::cout << RED << "Cat destructor called!" << RESET << std::endl;
 }
 // ================= Auxiliar Functions =================
@@ -40,4 +45,9 @@ Cat::~Cat()
 void Cat::makeSound() const
 {
 	std::cout << CYAN << "Meow!" << RESET << std::endl;
+}
+
+Brain* Cat::getBrain() const
+{
+	return brain;
 }

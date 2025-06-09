@@ -30,4 +30,8 @@ class Brain
 
 		// Destructor
 		~Brain();
+
+		// Member functions
+		void setIdea(int index, const std::string& idea);
+		const std::string& getIdea(int index) const;
 };
