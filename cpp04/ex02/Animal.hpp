@@ -12,23 +12,23 @@
 #define CYAN "\033[36m"
 #define WHITE "\033[37m"
 
-class AAnimal
+class Animal
 {
 	protected:
 		std::string _type;
 	public:
 		// Default constructor
-		AAnimal();
-		AAnimal(std::string type);
+		Animal();
+		Animal(std::string type);
 
 		// Copy constructor
-		AAnimal(const AAnimal &other);
+		Animal(const Animal &other);
 
 		// Copy assignment operator overload
-		AAnimal &operator=(const AAnimal &other);
+		Animal &operator=(const Animal &other);
 
 		// Destructor
-		virtual ~AAnimal();
+		virtual ~Animal();
 
 		//Getters
 		const std::string& getType() const;

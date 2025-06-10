@@ -30,10 +30,8 @@ class Brain
 
 		// Destructor
 		~Brain();
-	
-		// Getters and Setters
-		void	setIdeas(int idx, const std::string& idea)
-		{
-			if ()
-		}
+
+		// Member functions
+		void setIdea(int index, const std::string& idea);
+		const std::string& getIdea(int index) const;
 };

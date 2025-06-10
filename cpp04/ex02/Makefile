@@ -1,13 +1,14 @@
-NAME=AAnimal
+NAME=Animal
 CXX=c++
 CXX_FLAGS=-Wall -Werror -Wextra -Wshadow -g -std=c++98
 SRC_PATH=.
 SRC_FILES=main.cpp \
-	AAnimal.cpp \
+	Animal.cpp \
 	Cat.cpp \
 	WrongAnimal.cpp \
 	WrongCat.cpp \
-	Dog.cpp 
+	Dog.cpp \
+	Brain.cpp
 OBJ_PATH=.
 OBJ_FILES=$(SRC_FILES:.cpp=.o)
 

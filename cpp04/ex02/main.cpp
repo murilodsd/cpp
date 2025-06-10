@@ -1,58 +1,103 @@
-#include "AAnimal.hpp"
-#include "WrongAnimal.hpp"
-#include "Cat.hpp"
-#include "WrongCat.hpp"
+#include "Animal.hpp"
 #include "Dog.hpp"
+#include "Cat.hpp"
+#include "Brain.hpp"
+#include "WrongAnimal.hpp"
+#include "WrongCat.hpp"
 #include <iostream>
-#include <cstdlib>
 
-int main()
-{
-    std::cout << "===== ANIMAL TESTS =====" << std::endl;
-
-    std::cout << "\n[1] Creating Animal, Dog, and Cat objects using Animal pointers..." << std::endl;
-    //const AAnimal* animal = new AAnimal();
-    const AAnimal* dog = new Dog();
-    const AAnimal* cat = new Cat();
-
-    std::cout << "\n[2] Checking types using getType():" << std::endl;
-    std::cout << "  - dog->getType(): " << dog->getType() << std::endl;
-    std::cout << "  - cat->getType(): " << cat->getType() << std::endl;
-    //std::cout << "  - animal->getType(): " << animal->getType() << std::endl;
-
-    std::cout << "\n[3] Calling makeSound() on each pointer:" << std::endl;
-    std::cout << "  - cat->makeSound(): ";
-    cat->makeSound();
-    std::cout << "  - dog->makeSound(): ";
-    dog->makeSound();
-//     std::cout << "  - animal->makeSound(): ";
-//     animal->makeSound();
-
-    std::cout << "\n[4] Deleting Animal, Dog, and Cat objects..." << std::endl;
-    //delete animal;
-    delete dog;
-    delete cat;
-
-    std::cout << "\n===== WRONG ANIMAL TESTS =====" << std::endl;
-
-    std::cout << "\n[5] Creating WrongAnimal and WrongCat objects using WrongAnimal pointers..." << std::endl;
-    const WrongAnimal* wrong_animal = new WrongAnimal();
-    const WrongAnimal* wrong_cat = new WrongCat();
-
-    std::cout << "\n[6] Checking type of wrong_cat using getType():" << std::endl;
-    std::cout << "  - wrong_cat->getType(): " << wrong_cat->getType() << std::endl;
-
-    std::cout << "\n[7] Calling makeSound() on each WrongAnimal pointer:" << std::endl;
-    std::cout << "  - wrong_cat->makeSound(): ";
-    wrong_cat->makeSound();
-    std::cout << "  - wrong_animal->makeSound(): ";
-    wrong_animal->makeSound();
-
-    std::cout << "\n[8] Deleting WrongAnimal and WrongCat objects..." << std::endl;
-    delete wrong_animal;
-    delete wrong_cat;
-
-    std::cout << "\n===== END OF TESTS =====" << std::endl;
-
-    return (EXIT_SUCCESS);
+int main() {
+    std::cout << "=== CPP04 EX02 - Abstract Animal, Deep Copy, WrongAnimal Test ===" << std::endl;
+    
+    // Test 0: Demonstrate Animal is abstract (cannot be instantiated)
+    std::cout << "\n--- Test 0: Animal is Abstract ---" << std::endl;
+    std::cout << "// Animal animal; // <- COMPILATION ERROR: Cannot instantiate abstract class" << std::endl;
+    std::cout << "// Animal* ptr = new Animal(); // <- COMPILATION ERROR" << std::endl;
+    std::cout << "// Animal animals[10]; <- COMPILATION ERROR" << std::endl;
+    std::cout << "Only pointers to derived classes (Dog*, Cat*) can be stored in Animal*" << std::endl;
+    std::cout << "Animal class is abstract because makeSound() is pure virtual (= 0)" << std::endl;
+    
+    // Test 1: Basic polymorphic array
+    std::cout << "\n--- Test 1: Polymorphic Array ---" << std::endl;
+    const int N = 6;
+    Animal* animals[N];
+    
+    for (int i = 0; i < N; ++i) {
+        if (i % 2 == 0) {
+            std::cout << "Creating Dog " << i/2 + 1 << std::endl;
+            animals[i] = new Dog();
+        } else {
+            std::cout << "Creating Cat " << i/2 + 1 << std::endl;
+            animals[i] = new Cat();
+        }
+    }
+    
+    std::cout << "\n--- Animal Sounds ---" << std::endl;
+    for (int i = 0; i < N; ++i) {
+        std::cout << animals[i]->getType() << " says: ";
+        animals[i]->makeSound();
+    }
+    
+    std::cout << "\n--- Cleaning up array ---" << std::endl;
+    for (int i = 0; i < N; ++i) {
+        std::cout << "Deleting " << animals[i]->getType() << std::endl;
+        delete animals[i];
+    }
+    
+    // Test 2: Deep Copy with Cat
+    std::cout << "\n--- Test 2: Deep Copy (Cat) ---" << std::endl;
+    Cat originalCat;
+    originalCat.getBrain()->setIdea(0, "Fish are delicious");
+    originalCat.getBrain()->setIdea(1, "I love sleeping");
+    originalCat.getBrain()->setIdea(2, "Boxes are comfortable");
+    
+    std::cout << "Original cat ideas:" << std::endl;
+    for (int i = 0; i < 3; ++i) {
+        std::cout << "  Idea " << i << ": " << originalCat.getBrain()->getIdea(i) << std::endl;
+    }
+    
+    Cat copiedCat = originalCat; // Copy constructor
+    std::cout << "\nAfter copy constructor, copied cat ideas:" << std::endl;
+    for (int i = 0; i < 3; ++i) {
+        std::cout << "  Idea " << i << ": " << copiedCat.getBrain()->getIdea(i) << std::endl;
+    }
+    
+    // Modify copied cat's brain
+    copiedCat.getBrain()->setIdea(0, "Dogs are weird");
+    copiedCat.getBrain()->setIdea(1, "I want to play");
+    
+    std::cout << "\nAfter modifying copied cat:" << std::endl;
+    std::cout << "Original cat idea 0: " << originalCat.getBrain()->getIdea(0) << std::endl;
+    std::cout << "Copied cat idea 0: " << copiedCat.getBrain()->getIdea(0) << std::endl;
+    std::cout << "Original cat idea 1: " << originalCat.getBrain()->getIdea(1) << std::endl;
+    std::cout << "Copied cat idea 1: " << copiedCat.getBrain()->getIdea(1) << std::endl;
+    
+    // Test 3: Assignment operator with Dog
+    std::cout << "\n--- Test 3: Assignment Operator (Dog) ---" << std::endl;
+    Dog dog1;
+    dog1.getBrain()->setIdea(0, "Chase cats!");
+    dog1.getBrain()->setIdea(1, "Fetch the ball");
+    
+    Dog dog2;
+    dog2.getBrain()->setIdea(0, "Bark at mailman");
+    
+    std::cout << "Before assignment:" << std::endl;
+    std::cout << "Dog1 idea 0: " << dog1.getBrain()->getIdea(0) << std::endl;
+    std::cout << "Dog2 idea 0: " << dog2.getBrain()->getIdea(0) << std::endl;
+    
+    dog2 = dog1; // Assignment operator
+    
+    std::cout << "\nAfter assignment (dog2 = dog1):" << std::endl;
+    std::cout << "Dog1 idea 0: " << dog1.getBrain()->getIdea(0) << std::endl;
+    std::cout << "Dog2 idea 0: " << dog2.getBrain()->getIdea(0) << std::endl;
+    
+    // Modify dog2 to prove deep copy
+    dog2.getBrain()->setIdea(0, "Eat treats!");
+    
+    std::cout << "\nAfter modifying dog2:" << std::endl;
+    std::cout << "Dog1 idea 0: " << dog1.getBrain()->getIdea(0) << std::endl;
+    std::cout << "Dog2 idea 0: " << dog2.getBrain()->getIdea(0) << std::endl;
+    
+    std::cout << "\n=== All tests completed successfully! ===" << std::endl;
+    return 0;
 }

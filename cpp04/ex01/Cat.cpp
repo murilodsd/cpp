@@ -16,7 +16,7 @@ Cat::Cat(const Cat &other)
 :
 Animal(other._type)
 {
-	brain = new Brain(*other.brain);
+	brain = new Brain(*(other.brain));
 	std::cout << GREEN << "Cat copy constructor called!" << RESET << std::endl;
 }
 
@@ -28,7 +28,7 @@ Cat &Cat::operator=(const Cat &other)
 	{
 		_type = other._type;
 		delete brain;
-		brain = new Brain(*other.brain);
+		brain = new Brain(*(other.brain));
 	}
 	return *this;
 }
