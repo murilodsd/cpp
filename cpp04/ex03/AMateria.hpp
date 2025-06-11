@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <iostream>
+#include <cstddef>
 #include "ICharacter.hpp"
 
 #ifndef COLORS
@@ -23,6 +24,10 @@ class AMateria
 {
 	protected:
 		std::string	_type;
+		static AMateria** _droppedMaterias;
+		static size_t       _droppedCount;
+		static size_t       _droppedCapacity;
+
 	public:
 		// Default constructor
 		AMateria();
@@ -41,4 +46,6 @@ class AMateria
 		std::string const & getType() const; //Returns the materia type
 		virtual AMateria* clone() const = 0;
 		virtual void use(ICharacter& target);
+		static void addDroppedMateria(AMateria* m);
+		static void cleanupDroppedMaterias();
 };

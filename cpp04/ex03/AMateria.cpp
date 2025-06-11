@@ -1,5 +1,10 @@
 #include "AMateria.hpp"
 
+// ========== Static Variables Initialization ==========
+AMateria** AMateria::_droppedMaterias = NULL;
+size_t      AMateria::_droppedCount = 0;
+size_t      AMateria::_droppedCapacity = 0;
+
 // ==================== Constructors ====================
 AMateria::AMateria()
 {
@@ -25,11 +30,8 @@ _type(other._type)
 AMateria &AMateria::operator=(const AMateria &other)
 {
 	std::cout << GREEN << "AMateria copy assignment operator called!" << RESET << std::endl;
-	if (this != &other)
-	{
-		_type = other._type;
-	}
-    return *this;
+	(void)other;
+	return *this;
 }
 
 // ==================== Destructor =====================
@@ -44,4 +46,44 @@ std::cout << RED << "AMateria destructor called!" << RESET << std::endl;
 std::string const & AMateria::getType() const
 {
 	return (_type);
+}
+
+void AMateria::use(ICharacter& target)
+{
+	(void)target;
+	// Base implementation does nothing - derived classes should override this
+}
+
+void AMateria::addDroppedMateria(AMateria* m) {
+	if (m == NULL)
+		return;
+
+	if (_droppedCount >= _droppedCapacity)
+	{
+		size_t newCapacity = (_droppedCapacity == 0) ? 4 : _droppedCapacity * 2;
+
+		AMateria** newDropped = new AMateria*[newCapacity];
+
+		for (size_t i = 0; i < _droppedCount; ++i)
+			newDropped[i] = _droppedMaterias[i];
+
+		delete[] _droppedMaterias;
+
+		_droppedMaterias = newDropped;
+		_droppedCapacity = newCapacity;
+	}
+
+	_droppedMaterias[_droppedCount] = m;
+	_droppedCount++;
+}
+
+void AMateria::cleanupDroppedMaterias() {
+	for (size_t i = 0; i < _droppedCount; ++i)
+		delete _droppedMaterias[i];
+
+	delete[] _droppedMaterias;
+
+	_droppedMaterias = NULL;
+	_droppedCount = 0;
+	_droppedCapacity = 0;
 }
