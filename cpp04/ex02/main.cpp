@@ -11,6 +11,7 @@ int main() {
     
     // Test 0: Demonstrate Animal is abstract (cannot be instantiated)
     std::cout << "\n--- Test 0: Animal is Abstract ---" << std::endl;
+    //Animal animal;
     std::cout << "// Animal animal; // <- COMPILATION ERROR: Cannot instantiate abstract class" << std::endl;
     std::cout << "// Animal* ptr = new Animal(); // <- COMPILATION ERROR" << std::endl;
     std::cout << "// Animal animals[10]; <- COMPILATION ERROR" << std::endl;

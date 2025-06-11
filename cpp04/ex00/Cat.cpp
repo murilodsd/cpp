@@ -6,7 +6,6 @@ Cat::Cat()
 :
 Animal("Cat")
 {
-	brain = new Brain();
 	std::cout << GREEN << "Cat default constructor called!" << RESET << std::endl;
 }
 
