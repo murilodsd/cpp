@@ -1,6 +1,6 @@
 NAME=Animal
 CXX=c++
-CXX_FLAGS=-Wall -Werror -Wextra -Wshadow -g -std=c++98
+CXX_FLAGS=-Wall -Werror -Wextra -g -std=c++98
 SRC_PATH=.
 SRC_FILES=main.cpp \
 	Animal.cpp \
