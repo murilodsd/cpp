@@ -17,7 +17,7 @@
 
 class ScalarConverter
 {
-	public:
+	private:
 		// Default constructor
 		ScalarConverter();
 
@@ -28,7 +28,8 @@ class ScalarConverter
 		ScalarConverter &operator=(const ScalarConverter &other);
 
 		// Destructor
-		virtual ~ScalarConverter() = 0;
+		~ScalarConverter();
+	public:
 
 		//Others Methods
 		static void convert(const std::string& cpp_literal);
