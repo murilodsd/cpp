@@ -1,18 +1,18 @@
-/* Embora o dynamic_cast seja a estrela deste exercício, 
-é importante entender os outros operadores de cast em C++ 
-para saber por que eles não são a escolha certa para este problema:
+/* Although dynamic_cast is the star of this exercise,
+it's important to understand the other cast operators in C++
+to know why they are not the right choice for this problem:
 
-static_cast: Realiza conversões de tipo em tempo de compilação. 
-É útil para conversões numéricas (como int para float) ou para navegar em uma hierarquia de classes
-quando você tem certeza do tipo do objeto, pois não há verificação em tempo de execução.
-Usá-lo incorretamente em um cenário polimórfico, pode levar a comportamento indefinido.
+static_cast: Performs type conversions at compile time.
+It's useful for numeric conversions (like int to float) or for navigating a class hierarchy
+when you are certain of the object's type, as there is no runtime checking.
+Using it incorrectly in a polymorphic scenario can lead to undefined behavior.
 
-reinterpret_cast: É o tipo de cast mais perigoso.
-Ele simplesmente reinterpreta a representação binária de um tipo como outro,
-sem qualquer verificação de segurança. Seu uso é muito específico e geralmente deve ser evitado.
+reinterpret_cast: This is the most dangerous type of cast.
+It simply reinterprets the binary representation of one type as another,
+without any safety checks. Its use is very specific and should generally be avoided.
 
-const_cast: Usado para adicionar ou remover a qualificação const (ou volatile) de uma variável.
-É o único cast que pode fazer isso. */
+const_cast: Used to add or remove const (or volatile) qualification from a variable.
+It's the only cast that can do this. */
 
 #include "Base.hpp"
 #include "A.hpp"
