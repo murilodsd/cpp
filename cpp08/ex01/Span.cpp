@@ -48,7 +48,6 @@ void Span::addNumber(int number)
 	if (_size == _numbers.size())
 		throw std::logic_error("Span is already full");
 	_numbers.push_back(number);
-	std::sort(_numbers.begin(), _numbers.end());
 }
 
 void Span::addRange(std::vector<int>::iterator begin, std::vector<int>::iterator end)
@@ -56,25 +55,27 @@ void Span::addRange(std::vector<int>::iterator begin, std::vector<int>::iterator
 	for (std::vector<int>::iterator it = begin; it != end; ++it)
 		addNumber(*it);
 }
-unsigned int Span::shortestSpan() const
+unsigned int Span::shortestSpan()
 {
 	unsigned int shortest_span ;
 	if (_numbers.size() <= 1)
 		throw std::logic_error("Span size isn't enough to calculate shortest span");
-	shortest_span = abs(*_numbers.begin() - *(_numbers.begin() + 1));
+	std::sort(_numbers.begin(), _numbers.end());
+	shortest_span = *(_numbers.begin() + 1) - *_numbers.begin();
 	for (std::vector<int>::const_iterator it = _numbers.begin() + 1; it + 1 != _numbers.end(); ++it)
 	{
-		if (abs(*it - *(it + 1)) < shortest_span)
-			shortest_span = static_cast<unsigned int>(abs(*it - *(it + 1)));
+		if (static_cast<unsigned int>(*(it + 1) - *it) < shortest_span)
+			shortest_span = *(it + 1) - *it;
 	}
 	return (shortest_span);
 }
 
-unsigned int Span::longestSpan() const
+unsigned int Span::longestSpan()
 {
 	unsigned int longest_span ;
 	if (_numbers.size() <= 1)
 		throw std::logic_error("Span size isn't enough to calculate longest span");
-	longest_span = static_cast<unsigned int>(abs(*_numbers.begin() - *(_numbers.end() - 1)));
+	std::sort(_numbers.begin(), _numbers.end());
+	longest_span = *(_numbers.end() - 1) - *_numbers.begin();
 	return (longest_span);
 }

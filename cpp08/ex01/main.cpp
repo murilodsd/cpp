@@ -60,7 +60,6 @@ int main()
 	std::cout << YELLOW << "-----------------------" << RESET << std::endl << std::endl;
 
 	std::cout << YELLOW << "--- Large Scale Test (10,000 numbers) ---" << RESET << std::endl;
-	std::cout << "(This may be very slow due to sorting on each add)" <<  std::endl;
 	try {
 		Span sp3(10000);
 		// Since there is no method to add by iterators, we add one by one.
