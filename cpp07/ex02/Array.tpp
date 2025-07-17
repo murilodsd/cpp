@@ -25,7 +25,7 @@ _size(n)
 
 // ================= Copy Constructor ==================
 template<typename T>
-Array<T>::Array(const Array &other)
+Array<T>::Array(const Array<T> &other)
 :
 _array(new T[other._size]),
 _size(other._size)
