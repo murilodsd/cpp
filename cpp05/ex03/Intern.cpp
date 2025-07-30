@@ -40,22 +40,29 @@ AForm* Intern::createPresidential(const std::string& target)
 	return (new PresidentialPardonForm(target));
 }
 
-t_form_create_function AForm::form_create_functions[3] = {
-    {"shrubbery creation", &Intern::createShrubbery},
-    {"robotomy request", &Intern::createRobotomy}, 
-    {"presidential pardon", &Intern::createPresidential}
-};
-
-
 // ================== Member Functions ==================
 AForm* Intern::makeForm(const std::string& name, const std::string& target)
 {
+	// Array com os nomes dos formulários
+	const std::string formNames[] = {
+		"shrubbery creation",
+		"robotomy request",
+		"presidential pardon"
+	};
+
+	// Array com ponteiros para as funções de criação (usando ponteiros para membros)
+	AForm* (Intern::*formCreators[])(const std::string&) = {
+		&Intern::createShrubbery,
+		&Intern::createRobotomy,
+		&Intern::createPresidential
+	};
+
 	for (int i = 0; i < 3; i++)
 	{
-		if (AForm::form_create_functions[i].name == name)
+		if (formNames[i] == name)
 		{
 			std::cout << "Intern creates " << name << std::endl;
-			return AForm::form_create_functions[i].execute_function(target);
+			return (this->*formCreators[i])(target);
 		}
 	}
 	std::cerr << "Intern: form \"" << name << "\" does not exist" << std::endl;

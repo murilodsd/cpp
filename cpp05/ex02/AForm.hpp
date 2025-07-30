@@ -73,10 +73,10 @@ class AForm
 				AFormIsAlreadySignedException();
 		};
 		
-		class FormNotSignedException : public std::logic_error
+		class AFormNotSignedException : public std::logic_error
 		{
 			public:
-				FormNotSignedException();
+				AFormNotSignedException();
 		};
 };
 

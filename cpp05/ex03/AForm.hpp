@@ -19,16 +19,6 @@
 #endif
 
 class Bureaucrat;
-class AForm;
-class Intern;
-
-typedef AForm* (*t_ptrFunc)(const std::string &target);
-
-typedef struct s_form_create_function
-{
-	std::string	name;
-	t_ptrFunc	execute_function;
-}	t_form_create_function;
 
 class AForm
 {
@@ -42,8 +32,6 @@ class AForm
 		void checkExecutionRequirements(const Bureaucrat& executor) const;
 	
 	public:
-		static t_form_create_function form_create_functions[3];
-
 		// Default constructor
 		AForm();
 		AForm(const std::string &name, int gradeRequiredToSign, int gradeRequiredToExecute);
@@ -85,10 +73,10 @@ class AForm
 				AFormIsAlreadySignedException();
 		};
 		
-		class FormNotSignedException : public std::logic_error
+		class AFormNotSignedException : public std::logic_error
 		{
 			public:
-				FormNotSignedException();
+				AFormNotSignedException();
 		};
 };
 
@@ -105,4 +93,3 @@ class FileAlreadyExistsException : public std::runtime_error {
 	public:
 		FileAlreadyExistsException(const std::string &filename);
 };
-

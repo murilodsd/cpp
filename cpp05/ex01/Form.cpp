@@ -58,7 +58,7 @@ std::ostream&	operator<<(std::ostream &out, const Form& form)
 	out << "Form: " << form.getName() 
 		 << ", Signed: " << (form.getIsSigned() ? "Yes" : "No")
 		 << ", Grade required to sign: " << form.getGradeRequiredToSign()
-		 << ", Grade required to execute: " << form.getGradeRequiredToExecute() << '\n';
+		 << ", Grade required to execute: " << form.getGradeRequiredToExecute();
 	return (out);
 }
 
@@ -93,12 +93,12 @@ void Form::beSigned(const Bureaucrat& bureaucrat)
 }
 
 Form::GradeTooLowException::GradeTooLowException() 
-: std::runtime_error("Form grade is too low")
+: std::runtime_error("The grade is too low")
 {
 }
 
 Form::GradeTooHighException::GradeTooHighException() 
-: std::runtime_error("Form grade is too high")
+: std::runtime_error("The grade is too high")
 {
 }
 

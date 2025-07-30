@@ -58,7 +58,7 @@ std::ostream&	operator<<(std::ostream &out, const AForm& Aform)
 	out << "AForm: " << Aform.getName() 
 		 << ", Signed: " << (Aform.getIsSigned() ? "Yes" : "No")
 		 << ", Grade required to sign: " << Aform.getGradeRequiredToSign()
-		 << ", Grade required to execute: " << Aform.getGradeRequiredToExecute() << '\n';
+		 << ", Grade required to execute: " << Aform.getGradeRequiredToExecute();
 	return (out);
 }
 
@@ -95,9 +95,9 @@ void AForm::beSigned(const Bureaucrat& bureaucrat)
 void AForm::checkExecutionRequirements(const Bureaucrat& executor) const
 {
 	if (!this->getIsSigned())
-		throw FormNotSignedException();
+		throw AFormNotSignedException();
 	if (this->getGradeRequiredToExecute() < executor.getGrade())
-		throw Bureaucrat::GradeTooLowException();
+		throw AForm::GradeTooLowException();
 }
 
 // ================== Class Exceptions ==================
@@ -117,7 +117,7 @@ AForm::AFormIsAlreadySignedException::AFormIsAlreadySignedException()
 {
 }
 
-AForm::FormNotSignedException::FormNotSignedException()
+AForm::AFormNotSignedException::AFormNotSignedException()
 : std::logic_error("Form is not signed")
 {
 }

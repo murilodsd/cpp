@@ -44,7 +44,7 @@ Bureaucrat::~Bureaucrat()
 // ================= Auxiliar Functions =================
 std::ostream& operator<<(std::ostream& cout, const Bureaucrat& bureaucrat)
 {
-	cout << bureaucrat.getName() << ", bureaucrat grade " << bureaucrat.getGrade() << '\n';
+	cout << bureaucrat.getName() << ", bureaucrat grade " << bureaucrat.getGrade();
 	return (cout);
 }
 
@@ -80,6 +80,6 @@ void Bureaucrat::signForm(Form &form) const
 		std::cout << GREEN << _name << " signed " << form.getName() << RESET << std::endl;
 	}
 	catch (const std::exception& e) {
-		std::cerr << RED << "Exception caught: Bureaucrat " << this->getName() << " couldn't sign " << form.getName() << " because " << e.what() << RESET << std::endl;
+		std::cerr << RED << "Bureaucrat " << this->getName() << " couldn't sign " << form.getName() << " because " << e.what() << RESET << std::endl;
 	}
 }

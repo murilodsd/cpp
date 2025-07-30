@@ -44,7 +44,7 @@ Bureaucrat::~Bureaucrat()
 // ================= Auxiliar Functions =================
 std::ostream& operator<<(std::ostream& cout, const Bureaucrat& bureaucrat)
 {
-	cout << bureaucrat.getName() << ", bureaucrat grade " << bureaucrat.getGrade() << '\n';
+	cout << bureaucrat.getName() << ", bureaucrat grade " << bureaucrat.getGrade();
 	return (cout);
 }
 
