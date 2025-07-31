@@ -51,13 +51,13 @@ std::ostream& operator<<(std::ostream& cout, const Bureaucrat& bureaucrat)
 // ================= Class Exceptions =================
 Bureaucrat::GradeTooHighException::GradeTooHighException() 
 :
-std::runtime_error("Grade too high for bureaucrat")
+std::logic_error("Grade too high for bureaucrat")
 {
 }
 
 Bureaucrat::GradeTooLowException::GradeTooLowException() 
 :
-std::runtime_error("Grade too low for bureaucrat")
+std::logic_error("Grade too low for bureaucrat")
 {
 }
 

@@ -43,14 +43,12 @@ AForm* Intern::createPresidential(const std::string& target)
 // ================== Member Functions ==================
 AForm* Intern::makeForm(const std::string& name, const std::string& target)
 {
-	// Array com os nomes dos formulários
 	const std::string formNames[] = {
 		"shrubbery creation",
 		"robotomy request",
 		"presidential pardon"
 	};
 
-	// Array com ponteiros para as funções de criação (usando ponteiros para membros)
 	AForm* (Intern::*formCreators[])(const std::string&) = {
 		&Intern::createShrubbery,
 		&Intern::createRobotomy,

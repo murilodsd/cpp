@@ -103,12 +103,12 @@ void AForm::checkExecutionRequirements(const Bureaucrat& executor) const
 // ================== Class Exceptions ==================
 
 AForm::GradeTooLowException::GradeTooLowException() 
-: std::logic_error("Form grade is too low")
+: std::logic_error("The grade is too low")
 {
 }
 
 AForm::GradeTooHighException::GradeTooHighException() 
-: std::logic_error("Form grade is too high")
+: std::logic_error("The grade is too high")
 {
 }
 
@@ -126,12 +126,12 @@ AForm::AFormNotSignedException::AFormNotSignedException()
 
 FileOpenException::FileOpenException(const std::string& filename)
 :
-std::runtime_error("Could not open file " + filename)
+std::logic_error("Could not open file " + filename)
 {
 }
 
 FileAlreadyExistsException::FileAlreadyExistsException(const std::string& filename)
 :
-std::runtime_error("File " + filename + " already exists")
+std::logic_error("File " + filename + " already exists")
 {
 }

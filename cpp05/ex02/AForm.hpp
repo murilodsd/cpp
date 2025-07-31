@@ -84,12 +84,12 @@ std::ostream&	operator<<(std::ostream &cout, const AForm& Aform);
 
 
 //Exceptions
-class FileOpenException : public std::runtime_error {
+class FileOpenException : public std::logic_error {
 	public:
 		FileOpenException(const std::string &filename);
 };
 
-class FileAlreadyExistsException : public std::runtime_error {
+class FileAlreadyExistsException : public std::logic_error {
 	public:
 		FileAlreadyExistsException(const std::string &filename);
 };

@@ -50,19 +50,19 @@ class Form
 		void			beSigned(const Bureaucrat& bureaucrat);
 
 		//exceptions
-		class GradeTooHighException : public std::runtime_error
+		class GradeTooHighException : public std::logic_error
 		{
 			public:
 			GradeTooHighException();
 		};
 
-		class GradeTooLowException : public std::runtime_error
+		class GradeTooLowException : public std::logic_error
 		{
 			public:
 			GradeTooLowException();
 		};
 
-		class FormIsAlreadySignedException : public std::runtime_error
+		class FormIsAlreadySignedException : public std::logic_error
 		{
 			public:
 			FormIsAlreadySignedException();

@@ -47,13 +47,13 @@ class Bureaucrat
 		void			executeForm(AForm const & form) const;
 
 		//exceptions
-		class GradeTooHighException : public std::runtime_error
+		class GradeTooHighException : public std::logic_error
 		{
 			public:
 			GradeTooHighException();
 		};
 
-		class GradeTooLowException : public std::runtime_error
+		class GradeTooLowException : public std::logic_error
 		{
 			public:
 			GradeTooLowException();

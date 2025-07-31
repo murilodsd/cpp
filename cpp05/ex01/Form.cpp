@@ -93,16 +93,16 @@ void Form::beSigned(const Bureaucrat& bureaucrat)
 }
 
 Form::GradeTooLowException::GradeTooLowException() 
-: std::runtime_error("The grade is too low")
+: std::logic_error("The grade is too low")
 {
 }
 
 Form::GradeTooHighException::GradeTooHighException() 
-: std::runtime_error("The grade is too high")
+: std::logic_error("The grade is too high")
 {
 }
 
 Form::FormIsAlreadySignedException::FormIsAlreadySignedException()
-: std::runtime_error("Form is already signed")
+: std::logic_error("Form is already signed")
 {
 }

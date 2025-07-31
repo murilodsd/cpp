@@ -45,20 +45,20 @@ class Bureaucrat
 		void			decrementGrade();
 
 		//exceptions
-		class GradeTooHighException : public std::runtime_error
+		class GradeTooHighException : public std::logic_error
 		{
 			public:
 			GradeTooHighException() 
-			: std::runtime_error("Grade too high for bureaucrat")
+			: std::logic_error("Grade too high for bureaucrat")
 			{
 			}
 		};
 
-		class GradeTooLowException : public std::runtime_error
+		class GradeTooLowException : public std::logic_error
 		{
 			public:
 			GradeTooLowException() 
-			: std::runtime_error("Grade too low for bureaucrat")
+			: std::logic_error("Grade too low for bureaucrat")
 			{
 			}
 		};

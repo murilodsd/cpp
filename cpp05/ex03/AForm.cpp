@@ -103,12 +103,12 @@ void AForm::checkExecutionRequirements(const Bureaucrat& executor) const
 // ================== Class Exceptions ==================
 
 AForm::GradeTooLowException::GradeTooLowException() 
-: std::logic_error("Form grade is too low")
+: std::logic_error("The grade is too low")
 {
 }
 
 AForm::GradeTooHighException::GradeTooHighException() 
-: std::logic_error("Form grade is too high")
+: std::logic_error("The grade is too high")
 {
 }
 
