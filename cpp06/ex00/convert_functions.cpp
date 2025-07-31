@@ -1,4 +1,5 @@
 #include "convert_functions.hpp"
+#include <sstream>
 #include <iostream>
 #include <iomanip>
 #include <climits>
@@ -29,7 +30,9 @@ void convertInt(const std::string& cpp_literal)
 		printImpossibleCases();
 	else
 	{
-		if (num >= 0 && num <= 255 && isprint(num))
+		if (num < 0 || num > 255)
+			std::cout << "char: impossible" << std::endl;
+		else if (isprint(num))
 			std::cout << "char: '" << static_cast<char>(num) << "'" << std::endl;
 		else
 			std::cout << "char: Non displayable" << std::endl;
@@ -50,13 +53,14 @@ void convertFloat(const std::string& cpp_literal)
 		printImpossibleCases();
 	else
 	{
-		if (static_cast<int>(float_num) >= 0 \
-			&& static_cast<int>(float_num) <= 127 \
-			&& isprint(static_cast<int>(float_num)))
+		if (float_num < 0.0f || float_num >= 256.0f)
+			std::cout << "char: impossible" << std::endl;
+		else if (isprint(static_cast<int>(float_num)))
 			std::cout << "char: '" << static_cast<char>(float_num) << "'" << std::endl;
 		else
 			std::cout << "char: Non displayable" << std::endl;
-		if (float_num <= INT_MAX && float_num >= INT_MIN)
+		if (static_cast<double>(float_num) <= static_cast<double>(INT_MAX) 
+			&& static_cast<double>(float_num) >= static_cast<double>(INT_MIN))
 			std::cout << "int: " << static_cast<int>(float_num) << std::endl;
 		else
 			std::cout << "int: impossible" << std::endl;
@@ -76,14 +80,13 @@ void convertDouble(const std::string& cpp_literal)
 		printImpossibleCases();
 	else
 	{
-		double intpart;
-		if (static_cast<int>(double_num) >= 0 \
-			&& static_cast<int>(double_num) <= 127 \
-			&& isprint(static_cast<int>(double_num)))
+		if (double_num < 0.0 || double_num >= 256.0)
+			std::cout << "Impossible" << std::endl;
+		else if (isprint(static_cast<int>(double_num)))
 			std::cout << "char: '" << static_cast<char>(double_num) << "'" << std::endl;
 		else
 			std::cout << "char: Non displayable" << std::endl;
-		if (double_num <= INT_MAX && double_num >= INT_MIN)
+		if (double_num <= static_cast<double>(INT_MAX) && double_num >= static_cast<double>(INT_MIN))
 			std::cout << "int: " << static_cast<int>(double_num) << std::endl;
 		else
 			std::cout << "int: impossible" << std::endl;

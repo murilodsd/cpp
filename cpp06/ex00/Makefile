@@ -3,6 +3,7 @@ CXX=c++
 CXX_FLAGS=-Wall -Werror -Wextra -g -std=c++98
 SRC_PATH=.
 SRC_FILES=main.cpp \
+	convert_functions.cpp \
 	ScalarConverter.cpp \
 	utils.cpp
 OBJ_PATH=.

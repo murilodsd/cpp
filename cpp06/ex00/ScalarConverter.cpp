@@ -77,7 +77,7 @@ e_data_type checkDataType(const std::string& cpp_literal)
 		return (NONE);
 	if (isSpecialCase(cpp_literal))
 		return (SPECIAL_CASE);
-	if (cpp_literal.length() == 1 && isalpha(cpp_literal.at(0)))
+	if (cpp_literal.length() == 1 && !isdigit(cpp_literal.at(0)))
 		return (CHAR);
 	if (utils::is_str_number(cpp_literal, ""))
 		return (INT);
