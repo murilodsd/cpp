@@ -20,6 +20,8 @@ It's the only cast that can do this. */
 #include "C.hpp"
 #include "functions.hpp"
 #include <cstdlib>
+#include <ctime>
+#include <iostream> 
 
 int main()
 {
@@ -29,8 +31,11 @@ int main()
 
 	// Creating instances of derived classes randomly
 	std::cout << "Creating instances randomly..." << std::endl;
+	std::cout << "Object 1: ";
 	Base* a = generate(); // Randomly generates A, B, or C
+	std::cout << "Object 2: ";
 	Base* b = generate();
+	std::cout << "Object 3: ";
 	Base* c = generate();
 	
 	std::cout << std::endl;

@@ -1,4 +1,4 @@
-NAME=a.out
+NAME=dynamic_cast
 CXX=c++
 CXX_FLAGS=-Wall -Werror -Wextra -g -std=c++98
 SRC_PATH=.
