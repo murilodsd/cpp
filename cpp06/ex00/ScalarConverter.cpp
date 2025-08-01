@@ -84,20 +84,17 @@ e_data_type checkDataType(const std::string& cpp_literal)
 	const char* ptr_cpp_literal = cpp_literal.c_str();
 	if (cpp_literal.at(0) == '+' || cpp_literal.at(0) == '-')
 		ptr_cpp_literal++;
-	if (isdigit(*ptr_cpp_literal))
+	while (isdigit(*ptr_cpp_literal))
+		ptr_cpp_literal++;
+	if (*ptr_cpp_literal == '.')
 	{
+		ptr_cpp_literal++;
 		while (isdigit(*ptr_cpp_literal))
 			ptr_cpp_literal++;
-		if (*ptr_cpp_literal == '.' && isdigit(ptr_cpp_literal[1]))
-		{
-			ptr_cpp_literal++;
-			while (isdigit(*ptr_cpp_literal))
-				ptr_cpp_literal++;
-			if (*ptr_cpp_literal == 'f' && ptr_cpp_literal[1] == '\0')
-				return (FLOAT);
-			else if (*ptr_cpp_literal == '\0')
-				return (DOUBLE);
-		}
+		if (*ptr_cpp_literal == 'f' && ptr_cpp_literal[1] == '\0')
+			return (FLOAT);
+		else if (*ptr_cpp_literal == '\0')
+			return (DOUBLE);
 	}
 	return (NONE);
 }

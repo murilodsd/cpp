@@ -81,7 +81,7 @@ void convertDouble(const std::string& cpp_literal)
 	else
 	{
 		if (double_num < 0.0 || double_num >= 256.0)
-			std::cout << "Impossible" << std::endl;
+			std::cout << "char: impossible" << std::endl;
 		else if (isprint(static_cast<int>(double_num)))
 			std::cout << "char: '" << static_cast<char>(double_num) << "'" << std::endl;
 		else
