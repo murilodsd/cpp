@@ -2,9 +2,9 @@
 #include <iostream>
 
 template<typename T>
-void printArray(T* array, int size)
+void printArray(const T* array, size_t size)
 {
-	for(int i = 0; i < size; i++)
+	for(size_t i = 0; i < size; i++)
 		std::cout << array[i] << " ";
 	std::cout << std::endl;
 }
@@ -26,11 +26,21 @@ void add1(T& element)
  * @param array_address The address of the array to be processed.
  * @param array_length The number of elements in the array.
  * @param ptr_func The function to be called on every element of the array.
+ * @note This version is for non-const arrays and allows modification of elements.
  */
 template<typename T, typename Func>
-void iter(T* array_address, int array_length, Func ptr_func)
+void iter(T* array_address, size_t array_length, Func ptr_func)
 {
-	for (int i = 0; i < array_length; i++)
-		ptr_func((array_address)[i]);
+	for (size_t i = 0; i < array_length; i++)
+		ptr_func(array_address[i]);
 };
 
+//Other solution
+/*
+template<typename T>
+void iter(T* array_address, size_t array_length, void (*ptr_func)(T&))
+{
+	for (size_t i = 0; i < array_length; i++)
+		ptr_func(array_address[i]);
+};
+*/

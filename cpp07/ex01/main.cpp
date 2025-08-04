@@ -1,6 +1,7 @@
 #include "iter.hpp"
 #include <string>
 #include <iostream>
+#include <cctype>
 
 /*
 Subject: Function Templates applied to arrays and function pointers.
@@ -26,12 +27,18 @@ void	toupperstring(std::string& str)
 		str[i] = toupper(str[i]);
 }
 
+template<typename T>
+void print(const T& x) {
+    std::cout << x << " ";
+}
+
 int main()
 {
 	int array_number[6] = {0, 1, 2, 3, 4, 5};
 	char array_char[6] = {'0', '1', '2', '3', '4', '5'};
 	std::string array_string[6] = {"zero", "um", "dois", "tres", "quatro", "cinco"};
-	int size = 6;
+	const int const_array_number[6] = {10, 11, 12, 13, 14, 15};
+	size_t size = 6;
 
 	std::cout << "Original integer array: ";
 	printArray(array_number, size);
@@ -53,6 +60,13 @@ int main()
 	iter(array_string, size, toupperstring);
 	std::cout << "String array after toupperstring: ";
 	printArray(array_string, size);
+
+	std::cout << "\n--- Testing with a const array ---" << std::endl;
+	std::cout << "Original const int array: ";
+	printArray(const_array_number, size);
+	std::cout << "Printing const array using iter: ";
+	iter(const_array_number, size, print<int>);
+	std::cout << std::endl;
 
 	return 0;
 }
