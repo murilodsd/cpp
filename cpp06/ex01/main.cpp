@@ -6,7 +6,7 @@
 int main()
 {
 	std::cout << "=== CPP06 Exercise 01: Serialization ===" << std::endl;
-	
+
 	// Create a Data structure
 	Data originalData;
 	originalData.value = 42;
