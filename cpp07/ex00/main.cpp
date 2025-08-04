@@ -14,10 +14,10 @@ The challenge is to ensure that these functions work correctly with primitive ty
 (such as <, >, and the copy constructor) are defined for those types.
 This is the first step towards understanding how to write code that avoids duplication.
 */
-#include "utils_templates.hpp"
+#include "whatever.hpp"
+#include "Person.hpp"
 #include <iostream>
-
-
+#include <string>
 
 int main( void )
 {
@@ -40,5 +40,16 @@ int main( void )
 	std::cout << "c = " << c << ", d = " << d << std::endl;
 	std::cout << "min( c, d ) = " << ::min( c, d ) << std::endl;
 	std::cout << "max( c, d ) = " << ::max( c, d ) << std::endl;
+	
+	std::cout << "\n=== Person swap and min/max ===" << std::endl;
+	Person Mike("Mike", 20);
+	Person Brian("Brian", 10);
+	std::cout << "Before swap: Mike = " << Mike << ", Brian = " << Brian << std::endl;
+	::swap(Mike, Brian);
+	std::cout << "After swap: Mike = " << Mike << ", Brian = " << Brian << std::endl;
+	std::cout << "Mike = " << Mike.get_age() << ", Brian = " << Brian.get_age() << std::endl;
+	std::cout << "min( Mike, Brian ) = " << ::min( Mike, Brian ) << std::endl;
+	std::cout << "max( Mike, Brian ) = " << ::max( Mike, Brian ) << std::endl;
+	
 	return 0;
 }
