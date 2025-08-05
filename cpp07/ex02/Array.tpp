@@ -1,5 +1,5 @@
 #include "Array.hpp"
-#include <exception>
+#include <stdexcept>
 
 // ==================== Constructors ====================
 template<typename T>
@@ -11,16 +11,12 @@ _size(0)
 }
 
 template<typename T>
-
-Array<T>::Array(int n)
-:
-_array(new T[n]),
-_size(n)
+Array<T>::Array(size_t n)
+: _array(new T[n]()), _size(n)
 {
 	/* Each element is initialized using the default constructor of T (i.e., T()), ensuring
-	that all elements are properly constructed even for complex types. */
-	for (size_t i = 0; i < _size; i++)
-		_array[i] = T();
+	that all elements are properly constructed. Using new T[n]() performs value-initialization,
+	which default-constructs class types and zero-initializes primitive types. */
 }
 
 // ================= Copy Constructor ==================
@@ -60,17 +56,17 @@ Array<T>::~Array()
 // ================== Member Functions ==================
 
 template<typename T>
-T &Array<T>::operator[](size_t index)
+T &Array<T>::operator[](int index)
 {
-	if (index >= _size)
+	if (index >= static_cast<int>(_size) || index < 0)
 		throw std::out_of_range("Index out of range");
 	return _array[index];
 }
 
 template<typename T>
-const T& Array<T>::operator[](size_t index) const
+const T& Array<T>::operator[](int index) const
 {
-	if (index >= _size)
+	if (index >= static_cast<int>(_size) || index < 0)
 		throw std::out_of_range("Index out of range");
 	return _array[index];
 }

@@ -2,32 +2,50 @@
 #include <cstdlib>
 #include "Array.hpp"
 
-/* int main()
+int main()
 {
+	std::cout << "Testing default constructor (empty array):" << std::endl;
 	Array<int> int_array;
-	std::cout << int_array.size() << std::endl;
+	std::cout << "Size: " << int_array.size() << std::endl;
 
+	std::cout << "Testing access to empty array (should throw exception):" << std::endl;
 	try
 	{
 		std::cout << int_array[0] << std::endl;
 	}
 	catch(const std::exception& e)
 	{
-		std::cerr << "Erro accessing array: " << e.what() << '\n';
+		std::cerr << "Error accessing array: " << e.what() << '\n';
 	}
 	
-
+	std::cout << "Testing constructor with size 5:" << std::endl;
 	Array<int> int_array5(5);
-	std::cout << int_array5.size() << std::endl;
+	std::cout << "Size: " << int_array5.size() << std::endl;
 
-	std::cout << int_array5[0] << std::endl;
+	std::cout << "Testing array access and assignment:" << std::endl;
+	std::cout << "Initial value at index 0: " << int_array5[0] << std::endl;
 	int_array5[0] = 10;
-	std::cout << int_array5[0] << std::endl;
+	std::cout << "Value after assignment: " << int_array5[0] << std::endl;
 
+	std::cout << "Testing assignment operator:" << std::endl;
 	int_array = int_array5;
 
+	std::cout << "Testing with complex type (std::string):" << std::endl;
+	Array<std::string> string_array(3);
+	std::cout << "String array size: " << string_array.size() << std::endl;
+	string_array[0] = "Hello";
+	string_array[1] = "World";
+	string_array[2] = "!";
+	
+	std::cout << "String array contents: ";
+	for (unsigned int i = 0; i < string_array.size(); i++)
+	{
+		std::cout << string_array[i] << " ";
+	}
+	std::cout << std::endl;
+
 	return 0;
-} */
+}
 
 
 #define MAX_VAL 750

@@ -11,15 +11,15 @@ class Array
 	public:
 		// Default constructor
 		Array();
-		Array(int n);
+		Array(size_t _size);
 
 		// Copy constructor
 		Array(const Array<T> &other);
 
 		// Copy assignment operator overload
 		Array<T> &operator=(const Array<T> &other);
-		T& operator[](size_t index);
-		const T& operator[](size_t index) const;
+		T& operator[](int index);
+		const T& operator[](int index) const;
 
 		// Destructor
 		~Array();
