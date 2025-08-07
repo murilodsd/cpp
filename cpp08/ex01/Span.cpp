@@ -1,6 +1,7 @@
 #include "Span.hpp"
 #include <algorithm>
 #include <stdexcept>
+#include <climits> // Para UINT_MAX
 
 // ==================== Constructors ====================
 Span::Span()
@@ -51,19 +52,19 @@ void Span::addNumber(int number)
 }
 unsigned int Span::shortestSpan() const
 {
-	unsigned int shortest_span;
-	
 	if (_numbers.size() <= 1)
 		throw std::logic_error("Span size isn't enough to calculate shortest span");
 	
 	std::vector<int> sorted_numbers = _numbers;
-    	std::sort(sorted_numbers.begin(), sorted_numbers.end());
+	std::sort(sorted_numbers.begin(), sorted_numbers.end());
 
-	shortest_span = sorted_numbers[1] - sorted_numbers[0];
-	for (std::vector<int>::const_iterator it = sorted_numbers.begin() + 1; it + 1 != sorted_numbers.end(); ++it)
+	unsigned int shortest_span = UINT_MAX;
+
+	for (size_t i = 1; i < sorted_numbers.size(); ++i)
 	{
-		if (static_cast<unsigned int>(*(it + 1) - *it) < shortest_span)
-			shortest_span = *(it + 1) - *it;
+		unsigned int current_span = sorted_numbers[i] - sorted_numbers[i - 1];
+		if (current_span < shortest_span)
+			shortest_span = current_span;
 	}
 	return (shortest_span);
 }
