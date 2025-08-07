@@ -26,7 +26,7 @@ class Span
 		//others methods
 		void addNumber(int number);
 		template<typename Iterator>
-		void Span::addRange(Iterator start, Iterator end);
+		void addRange(Iterator start, Iterator end);
 		unsigned int shortestSpan() const;
 		unsigned int longestSpan() const;
 };
