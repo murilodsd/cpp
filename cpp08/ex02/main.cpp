@@ -92,6 +92,20 @@ int main(void)
 	}
 	std::cout << std::endl << std::endl;
 
+	// Test 6: Const Correctness
+	std::cout << BOLD << "Test 6: Const Correctness" << RESET << std::endl;
+	const MutantStack<int> const_ms(ms_assign);
+	std::cout << "Iterating through a const MutantStack:" << std::endl;
+	
+	MutantStack<int>::const_iterator it_const = const_ms.begin();
+	MutantStack<int>::const_iterator ite_const = const_ms.end();
+	while (it_const != ite_const)
+	{
+		std::cout << MAGENTA << *it_const << RESET << " ";
+		++it_const;
+	}
+	std::cout << std::endl << std::endl;
+
 	std::cout << BOLD << CYAN << "=== ALL TESTS COMPLETED ===" << RESET << std::endl;
 	return 0;
 }

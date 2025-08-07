@@ -62,7 +62,7 @@ int main()
 	std::cout << YELLOW << "--- Large Scale Test (10,000 numbers) ---" << RESET << std::endl;
 	try {
 		Span sp3(10000);
-		// Since there is no method to add by iterators, we add one by one.
+		// Adding a range of numbers using the addRange method.
 		std::vector<int> numbers;
 		for (int i = 0; i < 10000; ++i)
 		{

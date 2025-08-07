@@ -89,5 +89,24 @@ int main() {
 	else
 		std::cout << RED << "0 not found in deque." << RESET << std::endl;
 
+	std::cout << YELLOW BOLD << "\n----- TESTING CONST CONTAINER -----" << RESET << std::endl;
+	const std::vector<int> const_vec(vec);
+	std::cout << "Const vector contents: ";
+	for (std::vector<int>::size_type i = 0; i < const_vec.size(); ++i)
+		std::cout << BLUE << const_vec[i] << " " << RESET;
+	std::cout << std::endl;
+
+	std::cout << "Trying to find 20 in const vector..." << std::endl;
+	if (easyfind(const_vec, 20) != const_vec.end())
+		std::cout << GREEN << "Found 20 in const vector!" << RESET << std::endl;
+	else
+		std::cout << RED << "20 not found in const vector." << RESET << std::endl;
+
+	std::cout << "Trying to find 77 in const vector..." << std::endl;
+	if (easyfind(const_vec, 77) != const_vec.end())
+		std::cout << GREEN << "Found 77 in const vector!" << RESET << std::endl;
+	else
+		std::cout << RED << "77 not found in const vector." << RESET << std::endl;
+
 	return 0;
 }
