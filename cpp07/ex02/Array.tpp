@@ -5,7 +5,7 @@
 template<typename T>
 Array<T>::Array()
 :
-_array(new T[0]),
+_array(NULL),
 _size(0)
 {
 }
