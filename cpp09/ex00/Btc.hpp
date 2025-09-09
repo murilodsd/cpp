@@ -21,5 +21,5 @@ class Btc
 		~Btc();
 
 		const std::map<std::string, float>& getBtcMap() const;
-		void insertValue(std::string, float);
+		void insertValue(const std::string&, float);
 };

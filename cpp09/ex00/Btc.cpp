@@ -34,7 +34,7 @@ const std::map<std::string, float>& Btc::getBtcMap() const
 	return btc_map;
 }
 
-void Btc::insertValue(std::string date, float value)
+void Btc::insertValue(const std::string& date, float value)
 {
 	btc_map[date] = value;
 }

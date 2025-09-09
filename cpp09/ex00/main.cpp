@@ -22,18 +22,32 @@
 #endif
 
 
+/**
+ * @brief Processes a CSV file containing Bitcoin data and inserts values into the Btc object.
+ *
+ * The function reads the provided input file stream, discards the header line,
+ * and then parses each subsequent line as a date and value pair separated by a comma.
+ * Each parsed value is inserted into the given Btc object.
+ *
+ * @param btc Reference to a Btc object where the parsed values will be inserted.
+ * @param btc_infos_file Input file stream containing the Bitcoin data in CSV format.
+ *
+ * @throws std::runtime_error If there is an error reading the header line.
+ * @note The header line of the CSV file will be discarded.
+ */
 void process_btc_file(Btc &btc, std::ifstream &btc_infos_file)
 {
 	std::string line;
 
+	// Header discarded
 	if (!std::getline(btc_infos_file, line))
 	{
 		if (!btc_infos_file.eof())
 			throw std::runtime_error("Error: Reading header line");
 		else
-			std::cerr << RED << "Error: Data.csv is empty" << RESET << std::endl;
-		exit(EXIT_FAILURE);
+			throw std::runtime_error("Error: Data.csv is empty");
 	}
+	//Parses each subsequent line as a date and value pair and inserted into the given Btc object.
 	while(std::getline(btc_infos_file, line))
 	{
 		std::istringstream iss(line);
@@ -101,8 +115,8 @@ void checkInputValue(std::istringstream &iss, std::string& date, float& value)
 	if (iss.fail() || delimiter != '|')
 		throw std::runtime_error("Bad delimiter");
 	iss >> value;
-	if (iss.fail())
-		throw std::runtime_error("The value is not a valid number.");
+	if (iss.fail() || !iss.eof())
+		throw std::runtime_error("The value is not a valid number or there is any character after the value");
 	if (value < 0)
 		throw std::runtime_error("The value cannot be negative.");
 	if (value > 1000)
@@ -115,8 +129,10 @@ void printInfo(Btc &btc, std::string& date, float& value)
 	float btc_value;
 
 	it = btc.getBtcMap().lower_bound(date);
-	if (date == (*it).first)
+	if (it != btc.getBtcMap().end() && date == (*it).first)
 		btc_value = (*it).second;
+	else if (btc.getBtcMap().begin() == it)
+		throw std::runtime_error("No available Bitcoin data for this date or any previous date.");
 	else
 		btc_value = (*(--it)).second;
 
@@ -128,15 +144,18 @@ void	process_input_file(Btc &btc, std::ifstream &btc_input_file)
 	std::string line;
 	std::string date;
 	float value;
-	
+
+	// Header discarded
 	if (!std::getline(btc_input_file, line))
 	{
 		if (btc_input_file.eof())
-			std::cerr << RED << "Error: Input file is empty" << RESET << std::endl;
+			throw std::runtime_error("Input file is empty");
 		else
-			std::cerr << RED << "Error: Error readind input file" << RESET << std::endl;
-		exit(EXIT_FAILURE);
+			throw std::runtime_error("Error readind input file");
 	}
+	if (line != "date | value")
+		throw std::runtime_error("Wrong header");
+	//Get the btc total amount
 	while (std::getline(btc_input_file, line))
 	{
 		std::istringstream iss(line);
@@ -167,13 +186,22 @@ int main(int argc, char const *argv[])
 		std::cerr << RED  << "Error: Could not open file " + std::string(argv[1]) << RESET << std::endl;
 		return EXIT_FAILURE;
 	}
+
 	std::ifstream btc_infos_file("data.csv");
 	if (!btc_infos_file.is_open())
 	{
 		std::cerr << RED << "Error: Could not open file data.csv" << RESET << std::endl;
 		return EXIT_FAILURE;
 	}
-	process_btc_file(btc, btc_infos_file);
-	process_input_file(btc, file_input);
+	try
+	{
+		process_btc_file(btc, btc_infos_file);
+		process_input_file(btc, file_input);
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << "Error: " << e.what() << '\n';
+		return EXIT_FAILURE;
+	}
 	return EXIT_SUCCESS;
 }
