@@ -1,47 +1,63 @@
 #include "PmergeMe.hpp"
-#include <string>
-#include <limits>
-#include <cstdlib>
 #include <algorithm>
 #include <cctype>
+#include <cstdlib>
+#include <limits>
+#include <sstream>
+#include <string>
 
-bool isValidInput(int argc, char **argv) {
+std::vector<int> parseAndValidateInput(int argc, char **argv) {
 	if (argc < 2) {
-		std::cerr << "Error: No numbers to sort." << std::endl;
-		return false;
+		throw std::runtime_error("Error: No numbers to sort.");
 	}
-	// Adicionar verificação de duplicados
-	std::vector<long> check_duplicates;
+
+	std::vector<int> sequence;
+
 	for (int i = 1; i < argc; ++i) {
+		// Validar caracteres
 		for (int j = 0; argv[i][j] != '\0'; ++j) {
 			if (!std::isdigit(argv[i][j])) {
-				std::cerr << "Error: Invalid character in input." << std::endl;
-				return false;
+				throw std::runtime_error(
+				    "Error: Invalid character in input.");
 			}
 		}
 
-		long val = std::atol(argv[i]);
-		if (val <= 0 || val > std::numeric_limits<int>::max()) {
-			std::cerr << "Error: Number out of positive integer range." << std::endl;
-			return false;
+		// Converter e validar range
+		std::stringstream ss(argv[i]);
+		long num;
+		ss >> num;
+
+		if (ss.fail() || !ss.eof() || num <= 0 ||
+		    num > std::numeric_limits<int>::max()) {
+			throw std::runtime_error("Error: invalid input.");
 		}
 
-		if (std::find(check_duplicates.begin(), check_duplicates.end(), val) != check_duplicates.end()) {
-			std::cerr << "Error: Duplicate numbers are not allowed." << std::endl;
-			return false;
+		// Verificar duplicatas
+		for (size_t j = 0; j < sequence.size(); ++j) {
+			if (sequence[j] == static_cast<int>(num)) {
+				throw std::runtime_error(
+				    "Error: duplicate numbers are not "
+				    "allowed.");
+			}
 		}
-		check_duplicates.push_back(val);
+
+		sequence.push_back(static_cast<int>(num));
 	}
-	return true;
+
+	return sequence;
 }
 
 int main(int argc, char **argv) {
-    if (!isValidInput(argc, argv)) {
-        return 1;
-    }
+	try {
+		std::vector<int> sequence = parseAndValidateInput(argc, argv);
 
-    PmergeMe::sortVector(argc, argv);
-    PmergeMe::sortDeque(argc, argv); 
+		PmergeMe::sortVector(sequence);
+		// PmergeMe::sortDeque(sequence); // Futuramente
 
-    return 0;
+	} catch (const std::exception &e) {
+		std::cerr << e.what() << std::endl;
+		return EXIT_FAILURE;
+	}
+
+	return EXIT_SUCCESS;
 }
