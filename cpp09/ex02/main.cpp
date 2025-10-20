@@ -52,7 +52,7 @@ int main(int argc, char **argv) {
 		std::vector<int> sequence = parseAndValidateInput(argc, argv);
 
 		PmergeMe::sortVector(sequence);
-		// PmergeMe::sortDeque(sequence); // Futuramente
+		PmergeMe::sortDeque(sequence);
 
 	} catch (const std::exception &e) {
 		std::cerr << e.what() << std::endl;

@@ -16,6 +16,7 @@
 #endif
 
 #include <ctime>
+#include <deque>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -24,6 +25,7 @@ class PmergeMe {
       public:
 	// Ponto de entrada público para a ordenação com std::vector
 	static void sortVector(const std::vector<int> &sequence);
+	static void sortDeque(const std::vector<int> &sequence);
 
       private:
 	// Estruturas de dados internas para gerir os elementos e seus índices
@@ -35,28 +37,41 @@ class PmergeMe {
 
 	struct PendElement {
 		int value;
-		int myOldIndex; // guarda a posicao do perdedor na mainChain
+		int myOldIndex;	     // guarda a posicao do perdedor na mainChain
 		int partnerOldIndex; // guarda a posicao do par ganhador da
 				     // mainChain
-	};
-
-	// Functor para usar com std::lower_bound em C++98
-	// Compara um Element com um valor inteiro.
-	struct CompareElementValue {
-		bool operator()(const Element &elem, int val) const {
-			return elem.value < val;
-		}
 	};
 
 	// Métodos privados
 	static void fordJohnson(std::vector<Element> &container);
 	static std::vector<int> generateJacobsthalDiffs(size_t pend_size);
-	static void printSequence(const std::string &prefix,
-				  const std::vector<int> &container);
-	static void printSequenceDebug(const std::string &prefix,
-				       std::vector<Element> &container);
-	static void printSequenceDebug(const std::string &prefix,
-				       std::vector<PendElement> &container);
+	static void splitIntoWinnersAndLosers(std::vector<Element> &mainChain,
+					      std::vector<Element> &winnerChain,
+					      std::vector<PendElement> &pend);
+	static void buildIndexMaps(std::vector<Element> &winnerChain, std::vector<PendElement> &pend,
+				   std::vector<int> &winnerCurrentPosMap, std::vector<int> &loserIdxMap);
+	static void insertPendingElements(std::vector<Element> &winnerChain, std::vector<PendElement> &pend,
+					  std::vector<int> &winnerCurrentPosMap,
+					  std::vector<int> &loserIdxMap);
+
+	static void buildIndexMaps(std::deque<Element> &winnerChain, std::deque<PendElement> &pend,
+				      std::deque<int> &winnerCurrentPosMap, std::deque<int> &loserIdxMap);
+	static void splitIntoWinnersAndLosers(std::deque<Element> &mainChain,
+						 std::deque<Element> &winnerChain,
+						 std::deque<PendElement> &pend);
+	static void insertPendingElements(std::deque<Element> &winnerChain, std::deque<PendElement> &pend,
+					     std::deque<int> &winnerCurrentPosMap,
+					     std::deque<int> &loserIdxMap);
+	static void fordJohnson(std::deque<Element> &mainChain);
+
+	static bool elementLess(const Element &elem, int val);
+	static void printSequence(const std::string &prefix, const std::vector<int> &container);
+	static void printSequenceDebug(const std::string &prefix, std::vector<Element> &container);
+	static void printSequenceDebug(const std::string &prefix, std::vector<PendElement> &container);
+
+	static void printSequenceDebug(const std::string &prefix, std::deque<Element> &container);
+	static void printSequenceDebug(const std::string &prefix, std::deque<PendElement> &container);
+	static void printSequence(const std::string &prefix, const std::deque<int> &container);
 
 	// Construtores privados para impedir a instanciação
 	PmergeMe();
