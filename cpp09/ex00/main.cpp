@@ -1,26 +1,25 @@
-#include <iostream>
+#include "BitcoinExchange.hpp"
 #include <cstdlib>
-#include <fstream>
 #include <exception>
+#include <fstream>
+#include <iostream>
+#include <sstream>
 #include <stdexcept>
 #include <string>
-#include <sstream>
-#include "Btc.hpp"
 
 #ifndef COLORS
-# define COLORS
-# define RESET "\033[0m"
-# define BOLD "\033[1m"
-# define BLACK "\033[30m"
-# define RED "\033[31m"
-# define GREEN "\033[32m"
-# define YELLOW "\033[33m"
-# define BLUE "\033[34m"
-# define MAGENTA "\033[35m"
-# define CYAN "\033[36m"
-# define WHITE "\033[37m"
+#define COLORS
+#define RESET "\033[0m"
+#define BOLD "\033[1m"
+#define BLACK "\033[30m"
+#define RED "\033[31m"
+#define GREEN "\033[32m"
+#define YELLOW "\033[33m"
+#define BLUE "\033[34m"
+#define MAGENTA "\033[35m"
+#define CYAN "\033[36m"
+#define WHITE "\033[37m"
 #endif
-
 
 /**
  * @brief Processes a CSV file containing Bitcoin data and inserts values into the Btc object.
@@ -35,63 +34,64 @@
  * @throws std::runtime_error If there is an error reading the header line.
  * @note The header line of the CSV file will be discarded.
  */
-void process_btc_file(Btc &btc, std::ifstream &btc_infos_file)
-{
+void process_btc_file(BitcoinExchange &btc, std::ifstream &btc_infos_file) {
 	std::string line;
 
 	// Header discarded
-	if (!std::getline(btc_infos_file, line))
-	{
+	if (!std::getline(btc_infos_file, line)) {
 		if (!btc_infos_file.eof())
 			throw std::runtime_error("Error: Reading header line");
 		else
 			throw std::runtime_error("Error: Data.csv is empty");
 	}
-	//Parses each subsequent line as a date and value pair and inserted into the given Btc object.
-	while(std::getline(btc_infos_file, line))
-	{
+	if (line != "date,exchange_rate")
+		throw std::runtime_error("Error: Wrong header in data.csv");
+	// Parses each subsequent line as a date and value pair and inserted into the given Btc object.
+	while (std::getline(btc_infos_file, line)) {
 		std::istringstream iss(line);
 		std::string date;
 		std::string value;
 		std::getline(iss, date, ',');
 		std::getline(iss, value);
-		btc.insertValue(date, atof(value.c_str()));
+		std::stringstream ss(value);
+		float btc_value;
+		ss >> btc_value;
+		if (ss.fail() || !ss.eof())
+			throw std::runtime_error("Error: Invalid value in data.csv");
+		btc.insertValue(date, btc_value);
 	}
 }
 
-void checkDate(std::string date)
-{
+void checkDate(std::string date) {
 	std::istringstream iss(date);
 	int year, month, day;
 	char trace1, trace2;
 
 	if (date.size() != 10)
 		throw std::runtime_error("Bad date format");
-	for (size_t i = 0; i < date.size(); i++)
-	{
+	// Check if is a digit (except for the index 4 and 7: "-")
+	for (size_t i = 0; i < date.size(); i++) {
 		if ((i != 4 && i != 7) && (date[i] < '0' || date[i] > '9'))
 			throw std::runtime_error("Bad date format");
 	}
 
 	iss >> year >> trace1 >> month >> trace2 >> day;
 
-	if (iss.fail() || !iss.eof() || trace1 != '-' || trace2 != '-')
-	{
-       		throw std::runtime_error("Bad date format");
+	if (iss.fail() || !iss.eof() || trace1 != '-' || trace2 != '-') {
+		throw std::runtime_error("Bad date format");
 	}
-	if (year < 0 || month < 1 || month > 12 || day < 1 || day > 31)
-	{
+	// Validate year, month, and day ranges
+	if (year < 0 || month < 1 || month > 12 || day < 1 || day > 31) {
 		throw std::runtime_error("Invalid date");
 	}
-	if ((month == 4 || month == 6 || month == 9 || month == 11) && day > 30)
-	{
+	// Validate months with 30 days (April, June, September, November)
+	if ((month == 4 || month == 6 || month == 9 || month == 11) && day > 30) {
 		throw std::runtime_error("Invalid date");
 	}
-	if (month == 2)
-	{
+	// Validate February, accounting for leap years
+	if (month == 2) {
 		bool bissexto = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
-		if ((bissexto && day > 29) || (!bissexto && day > 28))
-		{
+		if ((bissexto && day > 29) || (!bissexto && day > 28)) {
 			throw std::runtime_error("Invalid date");
 		}
 	}
@@ -103,13 +103,12 @@ Stream Vazio (1ª tentativa)		fail() e eof() true		fail() e eof() true
 Leitura da última linha com sucesso	fail() false, eof() true	fail() false, eof() true
 Tentativa de leitura após o fim		fail() e eof() true		fail() e eof() true
 */
-void checkInputValue(std::istringstream &iss, std::string& date, float& value)
-{
+void checkInputValue(std::istringstream &iss, std::string &date, float &value) {
 	char delimiter;
 
 	iss >> date;
 	if (iss.fail())
-		throw std::runtime_error("Bad input");
+		throw std::runtime_error("Bad input date");
 	checkDate(date);
 	iss >> delimiter;
 	if (iss.fail() || delimiter != '|')
@@ -117,14 +116,14 @@ void checkInputValue(std::istringstream &iss, std::string& date, float& value)
 	iss >> value;
 	if (iss.fail() || !iss.eof())
 		throw std::runtime_error("The value is not a valid number or there is any character after the value");
+	// These conditions already handle the overflow problem
 	if (value < 0)
 		throw std::runtime_error("The value cannot be negative.");
 	if (value > 1000)
 		throw std::runtime_error("The value cannot exceed 1000.");
 }
 
-void printInfo(Btc &btc, std::string& date, float& value)
-{
+void printInfo(BitcoinExchange &btc, std::string &date, float &value) {
 	std::map<std::string, float>::const_iterator it;
 	float btc_value;
 
@@ -139,67 +138,55 @@ void printInfo(Btc &btc, std::string& date, float& value)
 	std::cout << date << " => " << value << " = " << btc_value * value << std::endl;
 }
 
-void	process_input_file(Btc &btc, std::ifstream &btc_input_file)
-{
+void process_input_file(BitcoinExchange &btc, std::ifstream &btc_input_file) {
 	std::string line;
 	std::string date;
 	float value;
 
 	// Header discarded
-	if (!std::getline(btc_input_file, line))
-	{
+	if (!std::getline(btc_input_file, line)) {
 		if (btc_input_file.eof())
 			throw std::runtime_error("Input file is empty");
 		else
 			throw std::runtime_error("Error readind input file");
 	}
 	if (line != "date | value")
-		throw std::runtime_error("Wrong header");
-	//Get the btc total amount
-	while (std::getline(btc_input_file, line))
-	{
+		throw std::runtime_error("File header should be 'date | value'");
+	// Get the btc total amount
+	while (std::getline(btc_input_file, line)) {
 		std::istringstream iss(line);
-		try
-		{
+		try {
 			checkInputValue(iss, date, value);
 			printInfo(btc, date, value);
-		}
-		catch(const std::exception& e)
-		{
+		} catch (const std::exception &e) {
 			std::cerr << "Error: " << e.what() << '\n';
 		}
 	}
 }
 
-int main(int argc, char const *argv[])
-{
-	Btc btc;
-	if (argc != 2)
-	{
-		std::cerr << RED  << "Error: Usage: ./btc <file>" << RESET << std::endl;
+int main(int argc, char const *argv[]) {
+	BitcoinExchange btc;
+	if (argc != 2) {
+		std::cerr << RED << "Error: Usage: ./btc <file>" << RESET << std::endl;
 		return EXIT_FAILURE;
 	}
-	
+
 	std::ifstream file_input(argv[1]);
-	if (!file_input.is_open())
-	{
-		std::cerr << RED  << "Error: Could not open file " + std::string(argv[1]) << RESET << std::endl;
+	if (!file_input.is_open()) {
+		std::cerr << RED << "Error: Could not open file " + std::string(argv[1]) << RESET
+			  << std::endl;
 		return EXIT_FAILURE;
 	}
 
 	std::ifstream btc_infos_file("data.csv");
-	if (!btc_infos_file.is_open())
-	{
+	if (!btc_infos_file.is_open()) {
 		std::cerr << RED << "Error: Could not open file data.csv" << RESET << std::endl;
 		return EXIT_FAILURE;
 	}
-	try
-	{
+	try {
 		process_btc_file(btc, btc_infos_file);
 		process_input_file(btc, file_input);
-	}
-	catch(const std::exception& e)
-	{
+	} catch (const std::exception &e) {
 		std::cerr << "Error: " << e.what() << '\n';
 		return EXIT_FAILURE;
 	}
