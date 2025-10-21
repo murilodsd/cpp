@@ -1,4 +1,5 @@
 #include "RPN.hpp"
+#include <limits>
 
 // ==================== Constructors ====================
 RPN::RPN()
@@ -39,12 +40,33 @@ static void executeOperation(std::stack<int> &int_stack, char math_operator)
 	switch (math_operator)
 	{
 		case '+':
+			if (second > 0 && first > std::numeric_limits<int>::max() - second)
+				throw std::overflow_error("Overflow detected in addition");
+			if (second < 0 && first < std::numeric_limits<int>::min() - second)
+				throw std::overflow_error("Underflow detected in addition");
 			int_stack.push(first + second);
 			break;
 		case '-':
+			if (second < 0 && first > std::numeric_limits<int>::max() + second)
+				throw std::overflow_error("Overflow detected in subtraction");
+			if (second > 0 && first < std::numeric_limits<int>::min() + second)
+				throw std::overflow_error("Underflow detected in subtraction");
 			int_stack.push(first - second);
 			break;
 		case '*':
+			if (first != 0 && second != 0) {
+				// Overflow positivo (ambos positivos)
+				if (first > 0 && second > 0 && first > std::numeric_limits<int>::max() / second)
+					throw std::overflow_error("Overflow detected in multiplication");
+				// Overflow positivo (ambos negativos -> resultado positivo)
+				if (first < 0 && second < 0 && first < std::numeric_limits<int>::max() / second)
+					throw std::overflow_error("Overflow detected in multiplication");
+				// Underflow (um positivo e um negativo)
+				if (first > 0 && second < 0 && second < std::numeric_limits<int>::min() / first)
+					throw std::overflow_error("Underflow detected in multiplication");
+				if (first < 0 && second > 0 && first < std::numeric_limits<int>::min() / second)
+					throw std::overflow_error("Underflow detected in multiplication");
+			}
 			int_stack.push(first * second);
 			break;
 		case '/':
