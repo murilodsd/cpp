@@ -106,8 +106,7 @@ void PmergeMe::fordJohnson(std::vector<Element> &mainChain) {
 	printSequenceDebug("Perdedores: ", pend);
 	std::cout << "ETAPA 2: Chamada recursiva para ordenar winnerChain de tamanho " << winnerChain.size()
 		  << std::endl;
-	// 2. CHAMADA RECURSIVA para ordenar a cadeia de ganhadores
-	// (winnerChain).
+	// 2. CHAMADA RECURSIVA para ordenar a cadeia de ganhadores (winnerChain).
 	//    Agora esta chamada faz um trabalho real e significativo.
 	fordJohnson(winnerChain);
 	std::cout << "winnerChain ordenado após recursão." << std::endl;
