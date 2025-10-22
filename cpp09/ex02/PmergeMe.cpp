@@ -260,8 +260,6 @@ void PmergeMe::printSequenceDebug(const std::string &prefix, std::vector<PendEle
 // Function to sort using a deque
 void PmergeMe::sortDeque(const std::vector<int> &sequence) {
 
-	printSequence("Before: ", sequence);
-
 	// Create a deque of structure with the elements
 	std::deque<Element> elements;
 	for (size_t i = 0; i < sequence.size(); ++i) {
@@ -277,8 +275,6 @@ void PmergeMe::sortDeque(const std::vector<int> &sequence) {
 	std::deque<int> sorted_sequence;
 	for (size_t i = 0; i < elements.size(); ++i)
 		sorted_sequence.push_back(elements[i].value);
-
-	printSequence("After:  ", sorted_sequence);
 
 	double duration = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000000.0;
 	std::cout << "Time to process a range of " << sorted_sequence.size()
