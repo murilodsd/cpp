@@ -39,8 +39,6 @@ std::vector<int> PmergeMe::generateJacobsthalDiffs(size_t pend_size) {
 
 // Function to sort using a vector
 void PmergeMe::sortVector(const std::vector<int> &sequence) {
-	std::cout << "=== INICIO sortVector ===" << std::endl;
-
 	printSequence("Before: ", sequence);
 
 	// Create a vector of structure with the elements
@@ -51,11 +49,9 @@ void PmergeMe::sortVector(const std::vector<int> &sequence) {
 	}
 
 	// Check the time spent by the function to sort a vector
-	std::cout << "Chamando fordJohnson..." << std::endl;
 	clock_t start = clock();
 	fordJohnson(elements);
 	clock_t end = clock();
-	std::cout << "fordJohnson finalizado." << std::endl;
 
 	std::vector<int> sorted_sequence;
 	sorted_sequence.reserve(elements.size());
@@ -67,20 +63,13 @@ void PmergeMe::sortVector(const std::vector<int> &sequence) {
 	double duration = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000000.0;
 	std::cout << "Time to process a range of " << sorted_sequence.size()
 		  << " elements with std::vector: " << duration << " us" << std::endl;
-	std::cout << "=== FIM sortVector ===" << std::endl;
 }
 
 // Function that will recursively sort the elements
 void PmergeMe::fordJohnson(std::vector<Element> &mainChain) {
-	std::cout << "\n--- fordJohnson chamado com " << mainChain.size() << " elementos ---" << std::endl;
-	printSequenceDebug("Numeros: ", mainChain);
-
 	// In case of only one element there is no need to sort
-	if (mainChain.size() <= 1) {
-		std::cout << "Caso base alcançado (size <= 1), retornando." << std::endl;
-		printSequenceDebug("Ordenado: ", mainChain);
+	if (mainChain.size() <= 1)
 		return;
-	}
 
 	// In case of an odd number of elements, we leave it separated
 	// for inclusion at the end
@@ -89,10 +78,8 @@ void PmergeMe::fordJohnson(std::vector<Element> &mainChain) {
 	if (hasStraggler) {
 		straggler = mainChain.back();
 		mainChain.pop_back();
-		std::cout << "Straggler detectado: " << straggler.value << std::endl;
 	}
 
-	std::cout << "ETAPA 1: Criando pares e definindo ganhadores/perdedores..." << std::endl;
 	// 1. Compare elements two by two and separate them into two chains
 	// A main chain winnerChain (winners (the largest)) and pend (losers (the smallest))
 	std::vector<Element> winnerChain;
@@ -100,18 +87,9 @@ void PmergeMe::fordJohnson(std::vector<Element> &mainChain) {
 
 	splitIntoWinnersAndLosers(mainChain, winnerChain, pend);
 
-	std::cout << "winnerChain (ganhadores) size: " << winnerChain.size()
-		  << ", pend (perdedores) size: " << pend.size() << std::endl;
-	printSequenceDebug("Ganhadores: ", winnerChain);
-	printSequenceDebug("Perdedores: ", pend);
-	std::cout << "ETAPA 2: Chamada recursiva para ordenar winnerChain de tamanho " << winnerChain.size()
-		  << std::endl;
 	// 2. RECURSIVE CALL to sort the winner chain (winnerChain).
 	//    Now this call does real and significant work.
 	fordJohnson(winnerChain);
-	std::cout << "winnerChain ordenado após recursão." << std::endl;
-
-	std::cout << "ETAPA 3: Construindo mapa de índices..." << std::endl;
 
 	// At this moment winnerChain is already sorted
 	// Get the first element that will be included in the winner list
@@ -130,34 +108,23 @@ void PmergeMe::fordJohnson(std::vector<Element> &mainChain) {
 	// Build the INDEX MAP
 	buildIndexMaps(winnerChain, pend, winnerCurrentPosMap, loserIdxMap);
 
-	std::cout << "ETAPA 4: Inserindo elementos de pend em winnerChain..." << std::endl;
 	// 4. Insert the elements from `pend` into `winnerChain`
 	winnerChain.insert(winnerChain.begin(), firstPend);
-	std::cout << "Primeiro elemento de pend inserido no início: " << firstPend.value << std::endl;
 
 	// Since a loser entered winnerChain in the first position
 	// we need to update the position of all winners that were in this list
 	for (size_t i = 0; i < winnerCurrentPosMap.size(); ++i)
 		winnerCurrentPosMap[i]++;
 
-	printSequence("Mapa de indices:  ", winnerCurrentPosMap);
-
 	insertPendingElements(winnerChain, pend, winnerCurrentPosMap, loserIdxMap);
 
 	if (hasStraggler) {
-		std::cout << "ETAPA 5: Inserindo straggler..." << std::endl;
 		std::vector<Element>::iterator insert_pos = std::lower_bound(
 			winnerChain.begin(), winnerChain.end(), straggler.value, PmergeMe::elementLess);
 		winnerChain.insert(insert_pos, straggler);
-		std::cout << "Straggler " << straggler.value << " que estava na posicao "
-			  << straggler.winnerIndex << " da mainChain foi inserido" << std::endl;
 	}
 
 	mainChain = winnerChain;
-	printSequenceDebug("Ordenado: ", mainChain);
-	std::cout << "--- fordJohnson " << mainChain.size()
-		  << " elementos finalizado (retornando mainChain ordenado) ---\n"
-		  << std::endl;
 }
 
 // Function to create pairs and separate into winners and losers
@@ -216,21 +183,15 @@ void PmergeMe::insertPendingElements(std::vector<Element> &winnerChain, std::vec
 	// The algorithm uses the difference of Jacobsthal sequence numbers
 	// to define the insertion order of losers and groups
 	std::vector<int> jacobsthal_diffs = generateJacobsthalDiffs(pend.size());
-	printSequence("jacobsthal: ", jacobsthal_diffs);
 	// Since we already inserted the "first" loser
 	// The first element (pair of smallest winner) is inserted first, so we start from index 0.
 	size_t last_idxmap_used = 0;
 
-	std::cout << "Inserindo elementos restantes usando sequência Jacobsthal..." << std::endl;
 	// We start from the second Jacobsthal group (i=1), since the first (size 1) has already been inserted.
 	for (size_t i = 1; i < jacobsthal_diffs.size(); ++i) {
 		// Define the group to be inserted that goes from group_end or pend size to last_idxmap_used
 		size_t group_end = last_idxmap_used + jacobsthal_diffs[i];
 		size_t current_idx = std::min(group_end, pend.size() - 1);
-
-		std::cout << "  Grupo Jacobsthal " << i << ": processando de " << current_idx << " até "
-			  << (last_idxmap_used + 1) << std::endl;
-		std::cout << "  indice nos perdedores: " << loserIdxMap[current_idx] << std::endl;
 
 		// The insertion of groups occurs in descending order
 		while (current_idx > last_idxmap_used) {
@@ -250,16 +211,12 @@ void PmergeMe::insertPendingElements(std::vector<Element> &winnerChain, std::vec
 			Element to_insert = {p_elem.value, p_elem.myOldIndex};
 			winnerChain.insert(insert_pos, to_insert);
 
-			std::cout << "    Inserido " << p_elem.value << " na posição " << insert_idx
-				  << std::endl;
-
 			// Update the position of winners
 			// only increment those to the right of the inserted position
 			for (size_t j = 0; j < winnerCurrentPosMap.size(); ++j) {
 				if (winnerCurrentPosMap[j] >= insert_idx)
 					winnerCurrentPosMap[j]++;
 			}
-			printSequence("Mapa de indices:  ", winnerCurrentPosMap);
 			current_idx--;
 		}
 		last_idxmap_used = group_end;
@@ -302,7 +259,6 @@ void PmergeMe::printSequenceDebug(const std::string &prefix, std::vector<PendEle
 
 // Function to sort using a deque
 void PmergeMe::sortDeque(const std::vector<int> &sequence) {
-	std::cout << "=== INICIO sortDeque ===" << std::endl;
 
 	printSequence("Before: ", sequence);
 
@@ -314,11 +270,9 @@ void PmergeMe::sortDeque(const std::vector<int> &sequence) {
 	}
 
 	// Check the time spent by the function to sort a deque
-	std::cout << "Chamando fordJohnson..." << std::endl;
 	clock_t start = clock();
 	fordJohnson(elements);
 	clock_t end = clock();
-	std::cout << "fordJohnson finalizado." << std::endl;
 
 	std::deque<int> sorted_sequence;
 	for (size_t i = 0; i < elements.size(); ++i)
@@ -329,20 +283,13 @@ void PmergeMe::sortDeque(const std::vector<int> &sequence) {
 	double duration = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000000.0;
 	std::cout << "Time to process a range of " << sorted_sequence.size()
 		  << " elements with std::deque: " << duration << " us" << std::endl;
-	std::cout << "=== FIM sortDeque ===" << std::endl;
 }
 
 // Function that will recursively sort the elements (deque version)
 void PmergeMe::fordJohnson(std::deque<Element> &mainChain) {
-	std::cout << "\n--- fordJohnson chamado com " << mainChain.size() << " elementos ---" << std::endl;
-	printSequenceDebug("Numeros: ", mainChain);
-
 	// In case of only one element there is no need to sort
-	if (mainChain.size() <= 1) {
-		std::cout << "Caso base alcançado (size <= 1), retornando." << std::endl;
-		printSequenceDebug("Ordenado: ", mainChain);
+	if (mainChain.size() <= 1)
 		return;
-	}
 
 	// In case of an odd number of elements, we leave it separated
 	// for inclusion at the end
@@ -351,10 +298,8 @@ void PmergeMe::fordJohnson(std::deque<Element> &mainChain) {
 	if (hasStraggler) {
 		straggler = mainChain.back();
 		mainChain.pop_back();
-		std::cout << "Straggler detectado: " << straggler.value << std::endl;
 	}
 
-	std::cout << "ETAPA 1: Criando pares e definindo ganhadores/perdedores..." << std::endl;
 	// 1. Compare elements two by two and separate them into two chains
 	// A main chain S (winners (the largest)) and pend (losers (the smallest))
 	std::deque<Element> winnerChain;
@@ -362,18 +307,9 @@ void PmergeMe::fordJohnson(std::deque<Element> &mainChain) {
 
 	splitIntoWinnersAndLosers(mainChain, winnerChain, pend);
 
-	std::cout << "winnerChain (ganhadores) size: " << winnerChain.size()
-		  << ", pend (perdedores) size: " << pend.size() << std::endl;
-	printSequenceDebug("Ganhadores: ", winnerChain);
-	printSequenceDebug("Perdedores: ", pend);
-	std::cout << "ETAPA 2: Chamada recursiva para ordenar winnerChain de tamanho " << winnerChain.size()
-		  << std::endl;
 	// 2. RECURSIVE CALL to sort the winnerChain
 	//    Now this call does real and significant work.
 	fordJohnson(winnerChain);
-	std::cout << "winnerChain ordenado após recursão." << std::endl;
-
-	std::cout << "ETAPA 3: Construindo mapa de índices..." << std::endl;
 
 	// At this moment winnerChain is already sorted
 	// Get the first element that will be included in the winner list
@@ -392,34 +328,23 @@ void PmergeMe::fordJohnson(std::deque<Element> &mainChain) {
 	// Build the INDEX MAP
 	buildIndexMaps(winnerChain, pend, winnerCurrentPosMap, loserIdxMap);
 
-	std::cout << "ETAPA 4: Inserindo elementos de pend em winnerChain..." << std::endl;
 	// 4. Insert the elements from `pend` into `winnerChain`
 	winnerChain.insert(winnerChain.begin(), firstPend);
-	std::cout << "Primeiro elemento de pend inserido no início: " << firstPend.value << std::endl;
 
 	// Since a loser entered winnerChain in the first position
 	// we need to update the position of all winners that were in this list
 	for (size_t i = 0; i < winnerCurrentPosMap.size(); ++i)
 		winnerCurrentPosMap[i]++;
 
-	printSequence("Mapa de indices:  ", winnerCurrentPosMap);
-
 	insertPendingElements(winnerChain, pend, winnerCurrentPosMap, loserIdxMap);
 
 	if (hasStraggler) {
-		std::cout << "ETAPA 5: Inserindo straggler..." << std::endl;
 		std::deque<Element>::iterator insert_pos = std::lower_bound(
 			winnerChain.begin(), winnerChain.end(), straggler.value, PmergeMe::elementLess);
 		winnerChain.insert(insert_pos, straggler);
-		std::cout << "Straggler " << straggler.value << " que estava na posicao "
-			  << straggler.winnerIndex << " da mainChain foi inserido" << std::endl;
 	}
 
 	mainChain = winnerChain;
-	printSequenceDebug("Ordenado: ", mainChain);
-	std::cout << "--- fordJohnson " << mainChain.size()
-		  << " elementos finalizado (retornando mainChain ordenado) ---\n"
-		  << std::endl;
 }
 
 void PmergeMe::buildIndexMaps(std::deque<Element> &winnerChain, std::deque<PendElement> &pend,
@@ -477,21 +402,15 @@ void PmergeMe::insertPendingElements(std::deque<Element> &winnerChain, std::dequ
 	// The algorithm uses the difference of Jacobsthal sequence numbers
 	// to define the insertion order of losers and groups
 	std::vector<int> jacobsthal_diffs = generateJacobsthalDiffs(pend.size());
-	printSequence("jacobsthal: ", jacobsthal_diffs);
 	// Since we already inserted the "first" loser
 	// The first element (pair of smallest winner) is inserted first, so we start from index 0.
 	size_t last_idxmap_used = 0;
 
-	std::cout << "Inserindo elementos restantes usando sequência Jacobsthal..." << std::endl;
 	// We start from the second Jacobsthal group (i=1), since the first (size 1) has already been inserted.
 	for (size_t i = 1; i < jacobsthal_diffs.size(); ++i) {
 		// Define the group to be inserted that goes from group_end or pend size to last_idxmap_used
 		size_t group_end = last_idxmap_used + jacobsthal_diffs[i];
 		size_t current_idx = std::min(group_end, pend.size() - 1);
-
-		std::cout << "  Grupo Jacobsthal " << i << ": processando de " << current_idx << " até "
-			  << (last_idxmap_used + 1) << std::endl;
-		std::cout << "  indice nos perdedores: " << loserIdxMap[current_idx] << std::endl;
 
 		// The insertion of groups occurs in descending order
 		while (current_idx > last_idxmap_used) {
@@ -511,16 +430,12 @@ void PmergeMe::insertPendingElements(std::deque<Element> &winnerChain, std::dequ
 			Element to_insert = {p_elem.value, p_elem.myOldIndex};
 			winnerChain.insert(insert_pos, to_insert);
 
-			std::cout << "    Inserido " << p_elem.value << " na posição " << insert_idx
-				  << std::endl;
-
 			// Update the position of winners
 			// only increment those to the right of the inserted position
 			for (size_t j = 0; j < winnerCurrentPosMap.size(); ++j) {
 				if (winnerCurrentPosMap[j] >= insert_idx)
 					winnerCurrentPosMap[j]++;
 			}
-			printSequence("Mapa de indices:  ", winnerCurrentPosMap);
 			current_idx--;
 		}
 		last_idxmap_used = group_end;
