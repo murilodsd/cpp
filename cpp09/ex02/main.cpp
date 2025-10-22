@@ -14,30 +14,30 @@ std::vector<int> parseAndValidateInput(int argc, char **argv) {
 	std::vector<int> sequence;
 
 	for (int i = 1; i < argc; ++i) {
-		// Validar caracteres
+		// Validate that all characters are digits
 		for (int j = 0; argv[i][j] != '\0'; ++j) {
 			if (!std::isdigit(argv[i][j])) {
 				throw std::runtime_error(
-				    "Error: Invalid character in input.");
+					"Error: Invalid character in input.");
 			}
 		}
 
-		// Converter e validar range
+		// Convert string to number and validate range
 		std::stringstream ss(argv[i]);
 		long num;
 		ss >> num;
 
 		if (ss.fail() || !ss.eof() || num <= 0 ||
-		    num > std::numeric_limits<int>::max()) {
+			num > std::numeric_limits<int>::max()) {
 			throw std::runtime_error("Error: invalid input.");
 		}
 
-		// Verificar duplicatas
+		// Check for duplicate values in sequence
 		for (size_t j = 0; j < sequence.size(); ++j) {
 			if (sequence[j] == static_cast<int>(num)) {
 				throw std::runtime_error(
-				    "Error: duplicate numbers are not "
-				    "allowed.");
+					"Error: duplicate numbers are not "
+					"allowed.");
 			}
 		}
 

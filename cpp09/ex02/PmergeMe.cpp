@@ -5,7 +5,7 @@
 #include <utility>
 #include <vector>
 
-// Forma Canônica
+// Canonical Form
 PmergeMe::PmergeMe() {}
 PmergeMe::PmergeMe(const PmergeMe &other) { (void)other; }
 PmergeMe &PmergeMe::operator=(const PmergeMe &other) {
@@ -23,7 +23,7 @@ std::vector<int> PmergeMe::generateJacobsthalDiffs(size_t pend_size) {
 	size_t j_prev = 1; // J(n-2), starts at J(1)=1
 	size_t j_curr = 1; // J(n-1), starts at J(2)=1
 	
-	// O primeiro grupo é sempre de tamanho 1 (J(2)-J(1))
+	// The first group is always of size 1 (J(2)-J(1))
 	diffs.push_back(1);
 	
 	while (j_curr < pend_size) {
@@ -37,20 +37,20 @@ std::vector<int> PmergeMe::generateJacobsthalDiffs(size_t pend_size) {
 }
 //============================= VECTOR ======================================
 
-// Função para ordenar utilzando um vector
+// Function to sort using a vector
 void PmergeMe::sortVector(const std::vector<int> &sequence) {
 	std::cout << "=== INICIO sortVector ===" << std::endl;
 
 	printSequence("Before: ", sequence);
 
-	// Criamos um vector de estrutura com os elementos
+	// Create a vector of structure with the elements
 	std::vector<Element> elements;
 	for (size_t i = 0; i < sequence.size(); ++i) {
 		Element e = {sequence[i], static_cast<int>(i)};
 		elements.push_back(e);
 	}
 
-	// Verificamos o tempo gasto pela função para ordenar um vector
+	// Check the time spent by the function to sort a vector
 	std::cout << "Chamando fordJohnson..." << std::endl;
 	clock_t start = clock();
 	fordJohnson(elements);
@@ -70,20 +70,20 @@ void PmergeMe::sortVector(const std::vector<int> &sequence) {
 	std::cout << "=== FIM sortVector ===" << std::endl;
 }
 
-// Função que irá ordenar recursivamente os elementos
+// Function that will recursively sort the elements
 void PmergeMe::fordJohnson(std::vector<Element> &mainChain) {
 	std::cout << "\n--- fordJohnson chamado com " << mainChain.size() << " elementos ---" << std::endl;
 	printSequenceDebug("Numeros: ", mainChain);
 
-	// No caso de apenas um elemento não há necessidade de ordenar
+	// In case of only one element there is no need to sort
 	if (mainChain.size() <= 1) {
 		std::cout << "Caso base alcançado (size <= 1), retornando." << std::endl;
 		printSequenceDebug("Ordenado: ", mainChain);
 		return;
 	}
 
-	// No caso de haver um número ímpar de elementos, deixamos ele separado
-	// para inclusão ao final
+	// In case of an odd number of elements, we leave it separated
+	// for inclusion at the end
 	Element straggler;
 	bool hasStraggler = mainChain.size() % 2 != 0;
 	if (hasStraggler) {
@@ -93,8 +93,8 @@ void PmergeMe::fordJohnson(std::vector<Element> &mainChain) {
 	}
 
 	std::cout << "ETAPA 1: Criando pares e definindo ganhadores/perdedores..." << std::endl;
-	// 1. Comparamos de dois em dois elementos e os separados em duas cadeias
-	// Uma cadeia principal S (ganhadores (os maiores)) e a pend(perdedores(os menores))
+	// 1. Compare elements two by two and separate them into two chains
+	// A main chain winnerChain (winners (the largest)) and pend (losers (the smallest))
 	std::vector<Element> winnerChain;
 	std::vector<PendElement> pend;
 
@@ -106,37 +106,37 @@ void PmergeMe::fordJohnson(std::vector<Element> &mainChain) {
 	printSequenceDebug("Perdedores: ", pend);
 	std::cout << "ETAPA 2: Chamada recursiva para ordenar winnerChain de tamanho " << winnerChain.size()
 		  << std::endl;
-	// 2. CHAMADA RECURSIVA para ordenar a cadeia de ganhadores (winnerChain).
-	//    Agora esta chamada faz um trabalho real e significativo.
+	// 2. RECURSIVE CALL to sort the winner chain (winnerChain).
+	//    Now this call does real and significant work.
 	fordJohnson(winnerChain);
 	std::cout << "winnerChain ordenado após recursão." << std::endl;
 
 	std::cout << "ETAPA 3: Construindo mapa de índices..." << std::endl;
 
-	// Nesse momento a winnerChain já está ordenada
-	// Pegar o primeiro elemento que sera incluido na lista de ganhadores
-	// Ele é o par do menor ganhador
+	// At this moment winnerChain is already sorted
+	// Get the first element that will be included in the winner list
+	// It is the pair of the smallest winner
 	int smallestWinnerOriginalPos = winnerChain[0].winnerIndex;
 	Element firstPend = {pend[smallestWinnerOriginalPos].value,
-			     pend[smallestWinnerOriginalPos].myOldIndex};
+				 pend[smallestWinnerOriginalPos].myOldIndex};
 
-	// índice desse vetor será posicao do perdedor que dará a posicao atual do seu par ganhador
-	// na lista dos ganhadores onde os perdedores tambem estarao sendo incluidos
+	// index of this vector will be position of loser that will give the current position of its winner pair
+	// in the winner list where losers will also be included
 	std::vector<int> winnerCurrentPosMap(pend.size());
-	// indice do vetor é a posicao do ganhador que dará o posicao do seu par perdedor
-	// esse vector sera estatico e sera usado apenas para pegarmos os perdedores na ordem de seus pares
+	// vector index is the position of winner that will give the position of its loser pair
+	// this vector will be static and will be used only to get the losers in order of their pairs
 	std::vector<int> loserIdxMap(pend.size());
 
-	// Construir o MAPA DE ÍNDICES
+	// Build the INDEX MAP
 	buildIndexMaps(winnerChain, pend, winnerCurrentPosMap, loserIdxMap);
 
 	std::cout << "ETAPA 4: Inserindo elementos de pend em winnerChain..." << std::endl;
-	// 4. Inserir os elementos da `pend` na `winnerChain` (lógica inalterada)
+	// 4. Insert the elements from `pend` into `winnerChain`
 	winnerChain.insert(winnerChain.begin(), firstPend);
 	std::cout << "Primeiro elemento de pend inserido no início: " << firstPend.value << std::endl;
 
-	// Como um perdedor entrou na winnerChain na primeira posicao
-	// precisamos atualizar a posicao de todos os ganhadores que estavam nessa lista
+	// Since a loser entered winnerChain in the first position
+	// we need to update the position of all winners that were in this list
 	for (size_t i = 0; i < winnerCurrentPosMap.size(); ++i)
 		winnerCurrentPosMap[i]++;
 
@@ -147,7 +147,7 @@ void PmergeMe::fordJohnson(std::vector<Element> &mainChain) {
 	if (hasStraggler) {
 		std::cout << "ETAPA 5: Inserindo straggler..." << std::endl;
 		std::vector<Element>::iterator insert_pos = std::lower_bound(
-		    winnerChain.begin(), winnerChain.end(), straggler.value, PmergeMe::elementLess);
+			winnerChain.begin(), winnerChain.end(), straggler.value, PmergeMe::elementLess);
 		winnerChain.insert(insert_pos, straggler);
 		std::cout << "Straggler " << straggler.value << " que estava na posicao "
 			  << straggler.winnerIndex << " da mainChain foi inserido" << std::endl;
@@ -160,7 +160,7 @@ void PmergeMe::fordJohnson(std::vector<Element> &mainChain) {
 		  << std::endl;
 }
 
-// Função para criar pares e separar em ganhadores e perdedores
+// Function to create pairs and separate into winners and losers
 void PmergeMe::splitIntoWinnersAndLosers(std::vector<Element> &mainChain, std::vector<Element> &winnerChain,
 					 std::vector<PendElement> &pend) {
 	for (size_t i = 0; i < mainChain.size(); i += 2) {
@@ -173,12 +173,12 @@ void PmergeMe::splitIntoWinnersAndLosers(std::vector<Element> &mainChain, std::v
 			loser = mainChain[i];
 		}
 
-		// Na prática a mainChain acaba sendo o conjunto dos ganhadores da rodada anterior
-		// Quando separamos a mainChain precisamos guardar qual era a posicao dos elementos nela
-		// Essa informação será guardada pelo elemento perdedor
+		// In practice mainChain ends up being the set of winners from the previous round
+		// When we separate mainChain we need to keep what was the position of elements in it
+		// This information will be stored by the loser element
 		int partnerOldIndex = winner.winnerIndex;
-		// Os ganhadores vao levar sua posicao na lista de ganhadores,
-		// para que possamos saber qual era sua posicao antes de ser ordenado
+		// The winners will carry their position in the winner list,
+		// so we can know what their position was before being sorted
 		winner.winnerIndex = winnerChain.size();
 		winnerChain.push_back(winner);
 
@@ -187,44 +187,44 @@ void PmergeMe::splitIntoWinnersAndLosers(std::vector<Element> &mainChain, std::v
 	}
 }
 
-// Função auxiliar para construir os mapas de índices após ordenação
+// Auxiliary function to build the index maps after sorting
 void PmergeMe::buildIndexMaps(std::vector<Element> &winnerChain, std::vector<PendElement> &pend,
-			      std::vector<int> &winnerCurrentPosMap, std::vector<int> &loserIdxMap) {
+				  std::vector<int> &winnerCurrentPosMap, std::vector<int> &loserIdxMap) {
 
 	for (size_t i = 0; i < winnerChain.size(); ++i) {
-		// winnerChain[i].winnerIndex possui a posição ANTES da ordenação
+		// winnerChain[i].winnerIndex has the position BEFORE sorting
 		int winnerPositionBeforeSorting = winnerChain[i].winnerIndex;
 
-		// o indice do vetor é posicao do perdedor na pend e o i informa onde seu par ganhador está
+		// the vector index is the position of loser in pend and i informs where its winner pair is
 		winnerCurrentPosMap[winnerPositionBeforeSorting] = i;
 
-		// loserIdxMap[i] diz qual é o índice do perdedor associado ao ganhador na posicao i
-		// pendMap[i] diz qual é o índice do perdedor (em `pend`) associado ao ganhador na posicao `i` da winnerChain ordenada
-		// ou seja, conseguimos "ordenar" os perdedores de acordo com os seus pares
+		// loserIdxMap[i] tells what is the index of the loser associated with the winner at position i
+		// pendMap[i] tells what is the index of the loser (in `pend`) associated with the winner at position `i` of sorted winnerChain
+		// that is, we manage to "sort" the losers according to their pairs
 		loserIdxMap[i] = winnerPositionBeforeSorting;
 
-		// Como ja tenho a relacao de cada perdedor com o ganhador por meio do map,
-		// ja posso setar o index do ganhador para o index que ele possuia na mainChain
+		// Since I already have the relationship of each loser with the winner through the map,
+		// I can already set the winner's index to the index it had in mainChain
 		winnerChain[i].winnerIndex = pend[winnerPositionBeforeSorting].partnerOldIndex;
 	}
 }
 
-// Função para inserir perdedores na winnerChain usando sequência de Jacobsthal
+// Function to insert losers into winnerChain using Jacobsthal sequence
 void PmergeMe::insertPendingElements(std::vector<Element> &winnerChain, std::vector<PendElement> &pend,
-				     std::vector<int> &winnerCurrentPosMap, std::vector<int> &loserIdxMap) {
+					 std::vector<int> &winnerCurrentPosMap, std::vector<int> &loserIdxMap) {
 
-	// O algoritmo utiliza a diferença do numeros da sequencia de Jabobstha
-	// para definir a ordem de inserção dos perdedores e o grupos
+	// The algorithm uses the difference of Jacobsthal sequence numbers
+	// to define the insertion order of losers and groups
 	std::vector<int> jacobsthal_diffs = generateJacobsthalDiffs(pend.size());
 	printSequence("jacobsthal: ", jacobsthal_diffs);
-	// Como já inserimos o "primeiro" perdedor
-	// O primeiro elemento (par do menor vencedor) é inserido primeiro, então começamos do índice 0.
+	// Since we already inserted the "first" loser
+	// The first element (pair of smallest winner) is inserted first, so we start from index 0.
 	size_t last_idxmap_used = 0;
 
 	std::cout << "Inserindo elementos restantes usando sequência Jacobsthal..." << std::endl;
-	// Começamos do segundo grupo de Jacobsthal (i=1), pois o primeiro (tamanho 1) já foi inserido.
+	// We start from the second Jacobsthal group (i=1), since the first (size 1) has already been inserted.
 	for (size_t i = 1; i < jacobsthal_diffs.size(); ++i) {
-		// Define o grupo a ser inserido que vai de group_end ou tamanho do pend até last_idxmap_used
+		// Define the group to be inserted that goes from group_end or pend size to last_idxmap_used
 		size_t group_end = last_idxmap_used + jacobsthal_diffs[i];
 		size_t current_idx = std::min(group_end, pend.size() - 1);
 
@@ -232,29 +232,29 @@ void PmergeMe::insertPendingElements(std::vector<Element> &winnerChain, std::vec
 			  << (last_idxmap_used + 1) << std::endl;
 		std::cout << "  indice nos perdedores: " << loserIdxMap[current_idx] << std::endl;
 
-		// A inserção dos grupos se dá na ordem decrescente
+		// The insertion of groups occurs in descending order
 		while (current_idx > last_idxmap_used) {
 			int loserPosInPend = loserIdxMap[current_idx];
 			PendElement &p_elem = pend[loserPosInPend];
 
-			// O limite da busca é a posição atual do par vencedor.
+			// The search limit is the current position of the winner pair.
 			int search_limit = winnerCurrentPosMap[loserPosInPend];
 
 			std::vector<Element>::iterator insert_pos =
-			    std::lower_bound(winnerChain.begin(), winnerChain.begin() + search_limit + 1,
-					     p_elem.value, PmergeMe::elementLess);
+				std::lower_bound(winnerChain.begin(), winnerChain.begin() + search_limit + 1,
+						 p_elem.value, PmergeMe::elementLess);
 
 			int insert_idx = std::distance(winnerChain.begin(), insert_pos);
-			// Como a lista de ganhadores vai virar a mainChain da funcao anterior
-			// temos que setar qual era o seu indice na mainChain
+			// Since the winner list will become the mainChain of the previous function
+			// we have to set what was its index in mainChain
 			Element to_insert = {p_elem.value, p_elem.myOldIndex};
 			winnerChain.insert(insert_pos, to_insert);
 
 			std::cout << "    Inserido " << p_elem.value << " na posição " << insert_idx
 				  << std::endl;
 
-			// Atualiza a posicao dos ganhadores
-			// só incrementa quem está à direita da posição inserida
+			// Update the position of winners
+			// only increment those to the right of the inserted position
 			for (size_t j = 0; j < winnerCurrentPosMap.size(); ++j) {
 				if (winnerCurrentPosMap[j] >= insert_idx)
 					winnerCurrentPosMap[j]++;
@@ -270,7 +270,7 @@ void PmergeMe::insertPendingElements(std::vector<Element> &winnerChain, std::vec
 
 bool PmergeMe::elementLess(const Element &elem, int val) { return elem.value < val; }
 
-// A função printSequence não muda
+// The printSequence function doesn't change
 void PmergeMe::printSequence(const std::string &prefix, const std::vector<int> &container) {
 	std::cout << prefix;
 	for (size_t i = 0; i < container.size(); ++i) {
@@ -300,258 +300,257 @@ void PmergeMe::printSequenceDebug(const std::string &prefix, std::vector<PendEle
 
 // ============================ DEQUE ====================================
 
-// Função para ordenar utilizando um deque
+// Function to sort using a deque
 void PmergeMe::sortDeque(const std::vector<int> &sequence) {
-    std::cout << "=== INICIO sortDeque ===" << std::endl;
+	std::cout << "=== INICIO sortDeque ===" << std::endl;
 
-    printSequence("Before: ", sequence);
+	printSequence("Before: ", sequence);
 
-    // Criamos um deque de estrutura com os elementos
-    std::deque<Element> elements;
-    for (size_t i = 0; i < sequence.size(); ++i) {
-        Element e = {sequence[i], static_cast<int>(i)};
-        elements.push_back(e);
-    }
+	// Create a deque of structure with the elements
+	std::deque<Element> elements;
+	for (size_t i = 0; i < sequence.size(); ++i) {
+		Element e = {sequence[i], static_cast<int>(i)};
+		elements.push_back(e);
+	}
 
-    // Verificamos o tempo gasto pela função para ordenar um deque
-    std::cout << "Chamando fordJohnson..." << std::endl;
-    clock_t start = clock();
-    fordJohnson(elements);
-    clock_t end = clock();
-    std::cout << "fordJohnson finalizado." << std::endl;
+	// Check the time spent by the function to sort a deque
+	std::cout << "Chamando fordJohnson..." << std::endl;
+	clock_t start = clock();
+	fordJohnson(elements);
+	clock_t end = clock();
+	std::cout << "fordJohnson finalizado." << std::endl;
 
-    std::deque<int> sorted_sequence;
-    for (size_t i = 0; i < elements.size(); ++i)
-        sorted_sequence.push_back(elements[i].value);
+	std::deque<int> sorted_sequence;
+	for (size_t i = 0; i < elements.size(); ++i)
+		sorted_sequence.push_back(elements[i].value);
 
-    printSequence("After:  ", sorted_sequence);
+	printSequence("After:  ", sorted_sequence);
 
-    double duration = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000000.0;
-    std::cout << "Time to process a range of " << sorted_sequence.size()
-          << " elements with std::deque: " << duration << " us" << std::endl;
-    std::cout << "=== FIM sortDeque ===" << std::endl;
+	double duration = static_cast<double>(end - start) / CLOCKS_PER_SEC * 1000000.0;
+	std::cout << "Time to process a range of " << sorted_sequence.size()
+		  << " elements with std::deque: " << duration << " us" << std::endl;
+	std::cout << "=== FIM sortDeque ===" << std::endl;
 }
 
-// Função que irá ordenar recursivamente os elementos (versão deque)
+// Function that will recursively sort the elements (deque version)
 void PmergeMe::fordJohnson(std::deque<Element> &mainChain) {
-    std::cout << "\n--- fordJohnson chamado com " << mainChain.size() << " elementos ---" << std::endl;
-    printSequenceDebug("Numeros: ", mainChain);
+	std::cout << "\n--- fordJohnson chamado com " << mainChain.size() << " elementos ---" << std::endl;
+	printSequenceDebug("Numeros: ", mainChain);
 
-    // No caso de apenas um elemento não há necessidade de ordenar
-    if (mainChain.size() <= 1) {
-        std::cout << "Caso base alcançado (size <= 1), retornando." << std::endl;
-        printSequenceDebug("Ordenado: ", mainChain);
-        return;
-    }
+	// In case of only one element there is no need to sort
+	if (mainChain.size() <= 1) {
+		std::cout << "Caso base alcançado (size <= 1), retornando." << std::endl;
+		printSequenceDebug("Ordenado: ", mainChain);
+		return;
+	}
 
-    // No caso de haver um número ímpar de elementos, deixamos ele separado
-    // para inclusão ao final
-    Element straggler;
-    bool hasStraggler = mainChain.size() % 2 != 0;
-    if (hasStraggler) {
-        straggler = mainChain.back();
-        mainChain.pop_back();
-        std::cout << "Straggler detectado: " << straggler.value << std::endl;
-    }
+	// In case of an odd number of elements, we leave it separated
+	// for inclusion at the end
+	Element straggler;
+	bool hasStraggler = mainChain.size() % 2 != 0;
+	if (hasStraggler) {
+		straggler = mainChain.back();
+		mainChain.pop_back();
+		std::cout << "Straggler detectado: " << straggler.value << std::endl;
+	}
 
-    std::cout << "ETAPA 1: Criando pares e definindo ganhadores/perdedores..." << std::endl;
-    // 1. Comparamos de dois em dois elementos e os separados em duas cadeias
-    // Uma cadeia principal S (ganhadores (os maiores)) e a pend(perdedores(os menores))
-    std::deque<Element> winnerChain;
-    std::deque<PendElement> pend;
+	std::cout << "ETAPA 1: Criando pares e definindo ganhadores/perdedores..." << std::endl;
+	// 1. Compare elements two by two and separate them into two chains
+	// A main chain S (winners (the largest)) and pend (losers (the smallest))
+	std::deque<Element> winnerChain;
+	std::deque<PendElement> pend;
 
-    splitIntoWinnersAndLosers(mainChain, winnerChain, pend);
+	splitIntoWinnersAndLosers(mainChain, winnerChain, pend);
 
-    std::cout << "winnerChain (ganhadores) size: " << winnerChain.size()
-          << ", pend (perdedores) size: " << pend.size() << std::endl;
-    printSequenceDebug("Ganhadores: ", winnerChain);
-    printSequenceDebug("Perdedores: ", pend);
-    std::cout << "ETAPA 2: Chamada recursiva para ordenar winnerChain de tamanho " << winnerChain.size()
-          << std::endl;
-    // 2. CHAMADA RECURSIVA para ordenar a cadeia de ganhadores
-    // (winnerChain).
-    //    Agora esta chamada faz um trabalho real e significativo.
-    fordJohnson(winnerChain);
-    std::cout << "winnerChain ordenado após recursão." << std::endl;
+	std::cout << "winnerChain (ganhadores) size: " << winnerChain.size()
+		  << ", pend (perdedores) size: " << pend.size() << std::endl;
+	printSequenceDebug("Ganhadores: ", winnerChain);
+	printSequenceDebug("Perdedores: ", pend);
+	std::cout << "ETAPA 2: Chamada recursiva para ordenar winnerChain de tamanho " << winnerChain.size()
+		  << std::endl;
+	// 2. RECURSIVE CALL to sort the winnerChain
+	//    Now this call does real and significant work.
+	fordJohnson(winnerChain);
+	std::cout << "winnerChain ordenado após recursão." << std::endl;
 
-    std::cout << "ETAPA 3: Construindo mapa de índices..." << std::endl;
+	std::cout << "ETAPA 3: Construindo mapa de índices..." << std::endl;
 
-    // Nesse momento a winnerChain já está ordenada
-    // Pegar o primeiro elemento que sera incluido na lista de ganhadores
-    // Ele é o par do menor ganhador
-    int smallestWinnerOriginalPos = winnerChain[0].winnerIndex;
-    Element firstPend = {pend[smallestWinnerOriginalPos].value,
-                 pend[smallestWinnerOriginalPos].myOldIndex};
+	// At this moment winnerChain is already sorted
+	// Get the first element that will be included in the winner list
+	// It is the pair of the smallest winner
+	int smallestWinnerOriginalPos = winnerChain[0].winnerIndex;
+	Element firstPend = {pend[smallestWinnerOriginalPos].value,
+				 pend[smallestWinnerOriginalPos].myOldIndex};
 
-    // índice desse vetor será posicao do perdedor que dará a posicao atual do seu par ganhador
-    // na lista dos ganhadores onde os perdedores tambem estarao sendo incluidos
-    std::deque<int> winnerCurrentPosMap(pend.size());
-    // indice do vetor é a posicao do ganhador que dará o posicao do seu par perdedor
-    // esse vector sera estatico e sera usado apenas para pegarmos os perdedores na ordem de seus pares
-    std::deque<int> loserIdxMap(pend.size());
+	// index of this vector will be position of loser that will give the current position of its winner pair
+	// in the winner list where losers will also be included
+	std::deque<int> winnerCurrentPosMap(pend.size());
+	// vector index is the position of winner that will give the position of its loser pair
+	// this vector will be static and will be used only to get the losers in order of their pairs
+	std::deque<int> loserIdxMap(pend.size());
 
-    // Construir o MAPA DE ÍNDICES
-    buildIndexMaps(winnerChain, pend, winnerCurrentPosMap, loserIdxMap);
+	// Build the INDEX MAP
+	buildIndexMaps(winnerChain, pend, winnerCurrentPosMap, loserIdxMap);
 
-    std::cout << "ETAPA 4: Inserindo elementos de pend em winnerChain..." << std::endl;
-    // 4. Inserir os elementos da `pend` na `winnerChain` (lógica inalterada)
-    winnerChain.insert(winnerChain.begin(), firstPend);
-    std::cout << "Primeiro elemento de pend inserido no início: " << firstPend.value << std::endl;
+	std::cout << "ETAPA 4: Inserindo elementos de pend em winnerChain..." << std::endl;
+	// 4. Insert the elements from `pend` into `winnerChain`
+	winnerChain.insert(winnerChain.begin(), firstPend);
+	std::cout << "Primeiro elemento de pend inserido no início: " << firstPend.value << std::endl;
 
-    // Como um perdedor entrou na winnerChain na primeira posicao
-    // precisamos atualizar a posicao de todos os ganhadores que estavam nessa lista
-    for (size_t i = 0; i < winnerCurrentPosMap.size(); ++i)
-        winnerCurrentPosMap[i]++;
+	// Since a loser entered winnerChain in the first position
+	// we need to update the position of all winners that were in this list
+	for (size_t i = 0; i < winnerCurrentPosMap.size(); ++i)
+		winnerCurrentPosMap[i]++;
 
-    printSequence("Mapa de indices:  ", winnerCurrentPosMap);
+	printSequence("Mapa de indices:  ", winnerCurrentPosMap);
 
-    insertPendingElements(winnerChain, pend, winnerCurrentPosMap, loserIdxMap);
+	insertPendingElements(winnerChain, pend, winnerCurrentPosMap, loserIdxMap);
 
-    if (hasStraggler) {
-        std::cout << "ETAPA 5: Inserindo straggler..." << std::endl;
-        std::deque<Element>::iterator insert_pos = std::lower_bound(
-            winnerChain.begin(), winnerChain.end(), straggler.value, PmergeMe::elementLess);
-        winnerChain.insert(insert_pos, straggler);
-        std::cout << "Straggler " << straggler.value << " que estava na posicao "
-              << straggler.winnerIndex << " da mainChain foi inserido" << std::endl;
-    }
+	if (hasStraggler) {
+		std::cout << "ETAPA 5: Inserindo straggler..." << std::endl;
+		std::deque<Element>::iterator insert_pos = std::lower_bound(
+			winnerChain.begin(), winnerChain.end(), straggler.value, PmergeMe::elementLess);
+		winnerChain.insert(insert_pos, straggler);
+		std::cout << "Straggler " << straggler.value << " que estava na posicao "
+			  << straggler.winnerIndex << " da mainChain foi inserido" << std::endl;
+	}
 
-    mainChain = winnerChain;
-    printSequenceDebug("Ordenado: ", mainChain);
-    std::cout << "--- fordJohnson " << mainChain.size()
-          << " elementos finalizado (retornando mainChain ordenado) ---\n"
-          << std::endl;
+	mainChain = winnerChain;
+	printSequenceDebug("Ordenado: ", mainChain);
+	std::cout << "--- fordJohnson " << mainChain.size()
+		  << " elementos finalizado (retornando mainChain ordenado) ---\n"
+		  << std::endl;
 }
 
 void PmergeMe::buildIndexMaps(std::deque<Element> &winnerChain, std::deque<PendElement> &pend,
-                  std::deque<int> &winnerCurrentPosMap, std::deque<int> &loserIdxMap) {
+				  std::deque<int> &winnerCurrentPosMap, std::deque<int> &loserIdxMap) {
 
-    for (size_t i = 0; i < winnerChain.size(); ++i) {
-        // winnerChain[i].winnerIndex possui a posição ANTES da ordenação
-        int winnerPositionBeforeSorting = winnerChain[i].winnerIndex;
+	for (size_t i = 0; i < winnerChain.size(); ++i) {
+		// winnerChain[i].winnerIndex has the position BEFORE sorting
+		int winnerPositionBeforeSorting = winnerChain[i].winnerIndex;
 
-        // o indice do vetor é posicao do perdedor na pend e o i informa onde seu par ganhador está
-        winnerCurrentPosMap[winnerPositionBeforeSorting] = i;
+		// the vector index is the position of loser in pend and i informs where its winner pair is
+		winnerCurrentPosMap[winnerPositionBeforeSorting] = i;
 
-        // loserIdxMap[i] diz qual é o índice do perdedor associado ao ganhador na posicao i
-        // pendMap[i] diz qual é o índice do perdedor (em `pend`) associado ao ganhador na posicao `i` da winnerChain ordenada
-        // ou seja, conseguimos "ordenar" os perdedores de acordo com os seus pares
-        loserIdxMap[i] = winnerPositionBeforeSorting;
+		// loserIdxMap[i] tells what is the index of the loser associated with the winner at position i
+		// pendMap[i] tells what is the index of the loser (in `pend`) associated with the winner at position `i` of sorted winnerChain
+		// that is, we manage to "sort" the losers according to their pairs
+		loserIdxMap[i] = winnerPositionBeforeSorting;
 
-        // Como ja tenho a relacao de cada perdedor com o ganhador por meio do map,
-        // ja posso setar o index do ganhador para o index que ele possuia na mainChain
-        winnerChain[i].winnerIndex = pend[winnerPositionBeforeSorting].partnerOldIndex;
-    }
+		// Since I already have the relationship of each loser with the winner through the map,
+		// I can already set the winner's index to the index it had in mainChain
+		winnerChain[i].winnerIndex = pend[winnerPositionBeforeSorting].partnerOldIndex;
+	}
 }
 
-// Função para criar pares e separar em ganhadores e perdedores (versão deque)
+// Function to create pairs and separate into winners and losers (deque version)
 void PmergeMe::splitIntoWinnersAndLosers(std::deque<Element> &mainChain, std::deque<Element> &winnerChain,
-                     std::deque<PendElement> &pend) {
-    for (size_t i = 0; i < mainChain.size(); i += 2) {
-        Element winner, loser;
-        if (mainChain[i].value > mainChain[i + 1].value) {
-            winner = mainChain[i];
-            loser = mainChain[i + 1];
-        } else {
-            winner = mainChain[i + 1];
-            loser = mainChain[i];
-        }
+					 std::deque<PendElement> &pend) {
+	for (size_t i = 0; i < mainChain.size(); i += 2) {
+		Element winner, loser;
+		if (mainChain[i].value > mainChain[i + 1].value) {
+			winner = mainChain[i];
+			loser = mainChain[i + 1];
+		} else {
+			winner = mainChain[i + 1];
+			loser = mainChain[i];
+		}
 
-        // Na prática a mainChain acaba sendo o conjunto dos ganhadores da rodada anterior
-        // Quando separamos a mainChain precisamos guardar qual era a posicao dos elementos nela
-        // Essa informação será guardada pelo elemento perdedor
-        int partnerOldIndex = winner.winnerIndex;
-        // Os ganhadores vao levar sua posicao na lista de ganhadores,
-        // para que possamos saber qual era sua posicao antes de ser ordenado
-        winner.winnerIndex = winnerChain.size();
-        winnerChain.push_back(winner);
+		// In practice mainChain ends up being the set of winners from the previous round
+		// When we separate mainChain we need to keep what was the position of elements in it
+		// This information will be stored by the loser element
+		int partnerOldIndex = winner.winnerIndex;
+		// The winners will carry their position in the winner list,
+		// so we can know what their position was before being sorted
+		winner.winnerIndex = winnerChain.size();
+		winnerChain.push_back(winner);
 
-        PendElement p = {loser.value, loser.winnerIndex, partnerOldIndex};
-        pend.push_back(p);
-    }
+		PendElement p = {loser.value, loser.winnerIndex, partnerOldIndex};
+		pend.push_back(p);
+	}
 }
 
-// Função para inserir perdedores na winnerChain usando sequência de Jacobsthal (versão deque)
+// Function to insert losers into winnerChain using Jacobsthal sequence (deque version)
 void PmergeMe::insertPendingElements(std::deque<Element> &winnerChain, std::deque<PendElement> &pend,
-                     std::deque<int> &winnerCurrentPosMap, std::deque<int> &loserIdxMap) {
+					 std::deque<int> &winnerCurrentPosMap, std::deque<int> &loserIdxMap) {
 
-    // O algoritmo utiliza a diferença do numeros da sequencia de Jabobstha
-    // para definir a ordem de inserção dos perdedores e o grupos
-    std::vector<int> jacobsthal_diffs = generateJacobsthalDiffs(pend.size());
-    printSequence("jacobsthal: ", jacobsthal_diffs);
-    // Como já inserimos o "primeiro" perdedor
-    // O primeiro elemento (par do menor vencedor) é inserido primeiro, então começamos do índice 0.
-    size_t last_idxmap_used = 0;
+	// The algorithm uses the difference of Jacobsthal sequence numbers
+	// to define the insertion order of losers and groups
+	std::vector<int> jacobsthal_diffs = generateJacobsthalDiffs(pend.size());
+	printSequence("jacobsthal: ", jacobsthal_diffs);
+	// Since we already inserted the "first" loser
+	// The first element (pair of smallest winner) is inserted first, so we start from index 0.
+	size_t last_idxmap_used = 0;
 
-    std::cout << "Inserindo elementos restantes usando sequência Jacobsthal..." << std::endl;
-    // Começamos do segundo grupo de Jacobsthal (i=1), pois o primeiro (tamanho 1) já foi inserido.
-    for (size_t i = 1; i < jacobsthal_diffs.size(); ++i) {
-        // Define o grupo a ser inserido que vai de group_end ou tamanho do pend até last_idxmap_used
-        size_t group_end = last_idxmap_used + jacobsthal_diffs[i];
-        size_t current_idx = std::min(group_end, pend.size() - 1);
+	std::cout << "Inserindo elementos restantes usando sequência Jacobsthal..." << std::endl;
+	// We start from the second Jacobsthal group (i=1), since the first (size 1) has already been inserted.
+	for (size_t i = 1; i < jacobsthal_diffs.size(); ++i) {
+		// Define the group to be inserted that goes from group_end or pend size to last_idxmap_used
+		size_t group_end = last_idxmap_used + jacobsthal_diffs[i];
+		size_t current_idx = std::min(group_end, pend.size() - 1);
 
-        std::cout << "  Grupo Jacobsthal " << i << ": processando de " << current_idx << " até "
-              << (last_idxmap_used + 1) << std::endl;
-        std::cout << "  indice nos perdedores: " << loserIdxMap[current_idx] << std::endl;
+		std::cout << "  Grupo Jacobsthal " << i << ": processando de " << current_idx << " até "
+			  << (last_idxmap_used + 1) << std::endl;
+		std::cout << "  indice nos perdedores: " << loserIdxMap[current_idx] << std::endl;
 
-        // A inserção dos grupos se dá na ordem decrescente
-        while (current_idx > last_idxmap_used) {
-            int loserPosInPend = loserIdxMap[current_idx];
-            PendElement &p_elem = pend[loserPosInPend];
+		// The insertion of groups occurs in descending order
+		while (current_idx > last_idxmap_used) {
+			int loserPosInPend = loserIdxMap[current_idx];
+			PendElement &p_elem = pend[loserPosInPend];
 
-            // O limite da busca é a posição atual do par vencedor.
-            int search_limit = winnerCurrentPosMap[loserPosInPend];
+			// The search limit is the current position of the winner pair.
+			int search_limit = winnerCurrentPosMap[loserPosInPend];
 
-            std::deque<Element>::iterator insert_pos =
-                std::lower_bound(winnerChain.begin(), winnerChain.begin() + search_limit + 1,
-                         p_elem.value, PmergeMe::elementLess);
+			std::deque<Element>::iterator insert_pos =
+				std::lower_bound(winnerChain.begin(), winnerChain.begin() + search_limit + 1,
+						 p_elem.value, PmergeMe::elementLess);
 
-            int insert_idx = std::distance(winnerChain.begin(), insert_pos);
-            // Como a lista de ganhadores vai virar a mainChain da funcao anterior
-            // temos que setar qual era o seu indice na mainChain
-            Element to_insert = {p_elem.value, p_elem.myOldIndex};
-            winnerChain.insert(insert_pos, to_insert);
+			int insert_idx = std::distance(winnerChain.begin(), insert_pos);
+			// Since the winner list will become the mainChain of the previous function
+			// we have to set what was its index in mainChain
+			Element to_insert = {p_elem.value, p_elem.myOldIndex};
+			winnerChain.insert(insert_pos, to_insert);
 
-            std::cout << "    Inserido " << p_elem.value << " na posição " << insert_idx
-                  << std::endl;
+			std::cout << "    Inserido " << p_elem.value << " na posição " << insert_idx
+				  << std::endl;
 
-            // Atualiza a posicao dos ganhadores
-            // só incrementa quem está à direita da posição inserida
-            for (size_t j = 0; j < winnerCurrentPosMap.size(); ++j) {
-                if (winnerCurrentPosMap[j] >= insert_idx)
-                    winnerCurrentPosMap[j]++;
-            }
-            printSequence("Mapa de indices:  ", winnerCurrentPosMap);
-            current_idx--;
-        }
-        last_idxmap_used = group_end;
-        if (last_idxmap_used >= pend.size() - 1)
-            break;
-    }
+			// Update the position of winners
+			// only increment those to the right of the inserted position
+			for (size_t j = 0; j < winnerCurrentPosMap.size(); ++j) {
+				if (winnerCurrentPosMap[j] >= insert_idx)
+					winnerCurrentPosMap[j]++;
+			}
+			printSequence("Mapa de indices:  ", winnerCurrentPosMap);
+			current_idx--;
+		}
+		last_idxmap_used = group_end;
+		if (last_idxmap_used >= pend.size() - 1)
+			break;
+	}
 }
 
 void PmergeMe::printSequenceDebug(const std::string &prefix, std::deque<Element> &container) {
-    std::cout << prefix;
-    for (size_t i = 0; i < container.size(); ++i) {
-        std::cout << CYAN << " " << container[i].value << "[" << container[i].winnerIndex << "]"
-              << RESET;
-    }
-    std::cout << std::endl;
+	std::cout << prefix;
+	for (size_t i = 0; i < container.size(); ++i) {
+		std::cout << CYAN << " " << container[i].value << "[" << container[i].winnerIndex << "]"
+			  << RESET;
+	}
+	std::cout << std::endl;
 }
 
 void PmergeMe::printSequenceDebug(const std::string &prefix, std::deque<PendElement> &container) {
-    std::cout << prefix;
-    for (size_t i = 0; i < container.size(); ++i) {
-        std::cout << CYAN << " " << container[i].value << "[" << container[i].myOldIndex << "]"
-              << RESET;
-    }
-    std::cout << std::endl;
+	std::cout << prefix;
+	for (size_t i = 0; i < container.size(); ++i) {
+		std::cout << CYAN << " " << container[i].value << "[" << container[i].myOldIndex << "]"
+			  << RESET;
+	}
+	std::cout << std::endl;
 }
 
 void PmergeMe::printSequence(const std::string &prefix, const std::deque<int> &container) {
-    std::cout << prefix;
-    for (size_t i = 0; i < container.size(); ++i) {
-        std::cout << " " << container[i];
-    }
-    std::cout << std::endl;
+	std::cout << prefix;
+	for (size_t i = 0; i < container.size(); ++i) {
+		std::cout << " " << container[i];
+	}
+	std::cout << std::endl;
 }
