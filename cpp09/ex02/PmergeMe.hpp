@@ -45,6 +45,8 @@ class PmergeMe {
 	// Private methods
 	static void fordJohnson(std::vector<Element> &container);
 	static std::vector<int> generateJacobsthalDiffs(size_t pend_size);
+
+	// Vector
 	static void splitIntoWinnersAndLosers(std::vector<Element> &mainChain,
 						std::vector<Element> &winnerChain,
 						std::vector<PendElement> &pend);
@@ -54,6 +56,7 @@ class PmergeMe {
 					  std::vector<int> &winnerCurrentPosMap,
 					  std::vector<int> &loserIdxMap);
 
+	// Deque
 	static void buildIndexMaps(std::deque<Element> &winnerChain, std::deque<PendElement> &pend,
 					std::deque<int> &winnerCurrentPosMap, std::deque<int> &loserIdxMap);
 	static void splitIntoWinnersAndLosers(std::deque<Element> &mainChain,
@@ -64,11 +67,15 @@ class PmergeMe {
 					     std::deque<int> &loserIdxMap);
 	static void fordJohnson(std::deque<Element> &mainChain);
 
+	// Auxiliary functions
 	static bool elementLess(const Element &elem, int val);
+
+	// Vector
 	static void printSequence(const std::string &prefix, const std::vector<int> &container);
 	static void printSequenceDebug(const std::string &prefix, std::vector<Element> &container);
 	static void printSequenceDebug(const std::string &prefix, std::vector<PendElement> &container);
 
+	// Deque
 	static void printSequenceDebug(const std::string &prefix, std::deque<Element> &container);
 	static void printSequenceDebug(const std::string &prefix, std::deque<PendElement> &container);
 	static void printSequence(const std::string &prefix, const std::deque<int> &container);
